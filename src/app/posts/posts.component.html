@@ -1,5 +1,6 @@
 <h3>Posts</h3>
 <button (click)="getAllPosts()" [disabled]="loading()">get all posts</button>
+<button (click)="createPost()" [disabled]="loading()">create new post</button>
 <input type="number" #input value="0" />
 <button (click)="getPost(input.valueAsNumber)">
   get post by id
@@ -13,7 +14,9 @@
 } @else {
   <div style="max-height: 200px; overflow-y: auto">
     @for (post of posts(); track post.id) {
-      <blockquote>{{ post.title }}</blockquote>
+      <blockquote>
+        <strong>{{ post.id }}:</strong> {{ post.title }}
+      </blockquote>
     } @empty {
       <blockquote>No posts found!</blockquote>
     }

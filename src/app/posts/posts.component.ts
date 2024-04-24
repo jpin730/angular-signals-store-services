@@ -21,4 +21,8 @@ export class PostsComponent {
   getPost(id: number) {
     this.postsService.getPost(id).subscribe()
   }
+
+  createPost() {
+    this.postsService.createPost('New post').subscribe()
+  }
 }
