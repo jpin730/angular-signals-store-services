@@ -20,7 +20,7 @@ function mc(e, t) {
 var Q = null,
   Wr = !1,
   Zr = 1,
-  We = Symbol('SIGNAL')
+  Ze = Symbol('SIGNAL')
 function O(e) {
   let t = Q
   return (Q = e), t
@@ -47,7 +47,7 @@ function Jo(e) {
   if (Q === null) return
   Q.consumerOnSignalRead(e)
   let t = Q.nextProducerIndex++
-  if ((Zt(Q), t < Q.producerNode.length && Q.producerNode[t] !== e && qn(Q))) {
+  if ((Yt(Q), t < Q.producerNode.length && Q.producerNode[t] !== e && qn(Q))) {
     let r = Q.producerNode[t]
     Kr(r, Q.producerIndexOfThis[t])
   }
@@ -107,7 +107,7 @@ function es(e, t) {
   }
 }
 function ts(e) {
-  Zt(e)
+  Yt(e)
   for (let t = 0; t < e.producerNode.length; t++) {
     let r = e.producerNode[t],
       n = e.producerLastReadVersion[t]
@@ -116,7 +116,7 @@ function ts(e) {
   return !1
 }
 function wc(e) {
-  if ((Zt(e), qn(e)))
+  if ((Yt(e), qn(e)))
     for (let t = 0; t < e.producerNode.length; t++)
       Kr(e.producerNode[t], e.producerIndexOfThis[t])
   ;(e.producerNode.length =
@@ -127,13 +127,13 @@ function wc(e) {
       (e.liveConsumerNode.length = e.liveConsumerIndexOfThis.length = 0)
 }
 function Cc(e, t, r) {
-  if ((Ec(e), Zt(e), e.liveConsumerNode.length === 0))
+  if ((Ec(e), Yt(e), e.liveConsumerNode.length === 0))
     for (let n = 0; n < e.producerNode.length; n++)
       e.producerIndexOfThis[n] = Cc(e.producerNode[n], e, n)
   return e.liveConsumerIndexOfThis.push(r), e.liveConsumerNode.push(t) - 1
 }
 function Kr(e, t) {
-  if ((Ec(e), Zt(e), e.liveConsumerNode.length === 1))
+  if ((Ec(e), Yt(e), e.liveConsumerNode.length === 1))
     for (let n = 0; n < e.producerNode.length; n++)
       Kr(e.producerNode[n], e.producerIndexOfThis[n])
   let r = e.liveConsumerNode.length - 1
@@ -146,13 +146,13 @@ function Kr(e, t) {
   ) {
     let n = e.liveConsumerIndexOfThis[t],
       i = e.liveConsumerNode[t]
-    Zt(i), (i.producerIndexOfThis[n] = t)
+    Yt(i), (i.producerIndexOfThis[n] = t)
   }
 }
 function qn(e) {
   return e.consumerIsAlwaysLive || (e?.liveConsumerNode?.length ?? 0) > 0
 }
-function Zt(e) {
+function Yt(e) {
   ;(e.producerNode ??= []),
     (e.producerIndexOfThis ??= []),
     (e.producerLastReadVersion ??= [])
@@ -167,7 +167,7 @@ function Ic(e) {
     if ((vc(t), Jo(t), t.value === Yr)) throw t.error
     return t.value
   }
-  return (r[We] = t), r
+  return (r[Ze] = t), r
 }
 var Qo = Symbol('UNSET'),
   Ko = Symbol('COMPUTING'),
@@ -215,7 +215,7 @@ function Sc(e) {
   let t = Object.create(Ac)
   t.value = e
   let r = () => (Jo(t), t.value)
-  return (r[We] = t), r
+  return (r[Ze] = t), r
 }
 function ns(e, t) {
   Dc() || Mc(), e.equal(e.value, t) || ((e.value = t), _p(e))
@@ -230,7 +230,7 @@ function _p(e) {
 function _(e) {
   return typeof e == 'function'
 }
-function Yt(e) {
+function Qt(e) {
   let r = e((n) => {
     Error.call(n), (n.stack = new Error().stack)
   })
@@ -240,7 +240,7 @@ function Yt(e) {
     r
   )
 }
-var Jr = Yt(
+var Jr = Qt(
   (e) =>
     function (r) {
       e(this),
@@ -347,19 +347,19 @@ var Te = {
   useDeprecatedSynchronousErrorHandling: !1,
   useDeprecatedNextContext: !1,
 }
-var Qt = {
+var Kt = {
   setTimeout(e, t, ...r) {
-    let { delegate: n } = Qt
+    let { delegate: n } = Kt
     return n?.setTimeout ? n.setTimeout(e, t, ...r) : setTimeout(e, t, ...r)
   },
   clearTimeout(e) {
-    let { delegate: t } = Qt
+    let { delegate: t } = Kt
     return (t?.clearTimeout || clearTimeout)(e)
   },
   delegate: void 0,
 }
 function ei(e) {
-  Qt.setTimeout(() => {
+  Kt.setTimeout(() => {
     let { onUnhandledError: t } = Te
     if (t) t(e)
     else throw e
@@ -376,22 +376,22 @@ function Oc(e) {
 function is(e, t, r) {
   return { kind: e, value: t, error: r }
 }
-var wt = null
-function Kt(e) {
+var Ct = null
+function Jt(e) {
   if (Te.useDeprecatedSynchronousErrorHandling) {
-    let t = !wt
-    if ((t && (wt = { errorThrown: !1, error: null }), e(), t)) {
-      let { errorThrown: r, error: n } = wt
-      if (((wt = null), r)) throw n
+    let t = !Ct
+    if ((t && (Ct = { errorThrown: !1, error: null }), e(), t)) {
+      let { errorThrown: r, error: n } = Ct
+      if (((Ct = null), r)) throw n
     }
   } else e()
 }
 function Fc(e) {
   Te.useDeprecatedSynchronousErrorHandling &&
-    wt &&
-    ((wt.errorThrown = !0), (wt.error = e))
+    Ct &&
+    ((Ct.errorThrown = !0), (Ct.error = e))
 }
-var Ct = class extends Z {
+var Et = class extends Z {
     constructor(t) {
       super(),
         (this.isStopped = !1),
@@ -400,7 +400,7 @@ var Ct = class extends Z {
           : (this.destination = Ap)
     }
     static create(t, r, n) {
-      return new Jt(t, r, n)
+      return new Xt(t, r, n)
     }
     next(t) {
       this.isStopped ? ss(Oc(t), this) : this._next(t)
@@ -470,7 +470,7 @@ var as = class {
         }
     }
   },
-  Jt = class extends Ct {
+  Xt = class extends Et {
     constructor(t, r, n) {
       super()
       let i
@@ -499,10 +499,10 @@ function Tp(e) {
 }
 function ss(e, t) {
   let { onStoppedNotification: r } = Te
-  r && Qt.setTimeout(() => r(e, t))
+  r && Kt.setTimeout(() => r(e, t))
 }
 var Ap = { closed: !0, next: Zn, error: Tp, complete: Zn }
-var Xt = (typeof Symbol == 'function' && Symbol.observable) || '@@observable'
+var en = (typeof Symbol == 'function' && Symbol.observable) || '@@observable'
 function me(e) {
   return e
 }
@@ -528,9 +528,9 @@ var k = (() => {
       return (n.source = this), (n.operator = r), n
     }
     subscribe(r, n, i) {
-      let o = Np(r) ? r : new Jt(r, n, i)
+      let o = Np(r) ? r : new Xt(r, n, i)
       return (
-        Kt(() => {
+        Jt(() => {
           let { operator: s, source: a } = this
           o.add(
             s ? s.call(o, a) : a ? this._subscribe(o) : this._trySubscribe(o),
@@ -550,7 +550,7 @@ var k = (() => {
       return (
         (n = Pc(n)),
         new n((i, o) => {
-          let s = new Jt({
+          let s = new Xt({
             next: (a) => {
               try {
                 r(a)
@@ -571,7 +571,7 @@ var k = (() => {
         ? void 0
         : n.subscribe(r)
     }
-    [Xt]() {
+    [en]() {
       return this
     }
     pipe(...r) {
@@ -601,7 +601,7 @@ function xp(e) {
   return e && _(e.next) && _(e.error) && _(e.complete)
 }
 function Np(e) {
-  return (e && e instanceof Ct) || (xp(e) && Xr(e))
+  return (e && e instanceof Et) || (xp(e) && Xr(e))
 }
 function ls(e) {
   return _(e?.lift)
@@ -622,7 +622,7 @@ function F(e) {
 function N(e, t, r, n, i) {
   return new ds(e, t, r, n, i)
 }
-var ds = class extends Ct {
+var ds = class extends Et {
   constructor(t, r, n, i, o, s) {
     super(t),
       (this.onFinalize = o),
@@ -668,7 +668,7 @@ var ds = class extends Ct {
     }
   }
 }
-function en() {
+function tn() {
   return F((e, t) => {
     let r = null
     e._refCount++
@@ -684,7 +684,7 @@ function en() {
     e.subscribe(n), n.closed || (r = e.connect())
   })
 }
-var tn = class extends k {
+var nn = class extends k {
   constructor(t, r) {
     super(),
       (this.source = t),
@@ -734,10 +734,10 @@ var tn = class extends k {
     return t
   }
   refCount() {
-    return en()(this)
+    return tn()(this)
   }
 }
-var kc = Yt(
+var kc = Qt(
   (e) =>
     function () {
       e(this),
@@ -764,7 +764,7 @@ var se = (() => {
         if (this.closed) throw new kc()
       }
       next(r) {
-        Kt(() => {
+        Jt(() => {
           if ((this._throwIfClosed(), !this.isStopped)) {
             this.currentObservers ||
               (this.currentObservers = Array.from(this.observers))
@@ -773,7 +773,7 @@ var se = (() => {
         })
       }
       error(r) {
-        Kt(() => {
+        Jt(() => {
           if ((this._throwIfClosed(), !this.isStopped)) {
             ;(this.hasError = this.isStopped = !0), (this.thrownError = r)
             let { observers: n } = this
@@ -782,7 +782,7 @@ var se = (() => {
         })
       }
       complete() {
-        Kt(() => {
+        Jt(() => {
           if ((this._throwIfClosed(), !this.isStopped)) {
             this.isStopped = !0
             let { observers: r } = this
@@ -950,8 +950,8 @@ function jc(e) {
     t ? 'Object is not iterable.' : 'Symbol.iterator is not defined.',
   )
 }
-function Et(e) {
-  return this instanceof Et ? ((this.v = e), this) : new Et(e)
+function It(e) {
+  return this instanceof It ? ((this.v = e), this) : new It(e)
 }
 function $c(e, t, r) {
   if (!Symbol.asyncIterator)
@@ -985,7 +985,7 @@ function $c(e, t, r) {
     }
   }
   function u(f) {
-    f.value instanceof Et
+    f.value instanceof It
       ? Promise.resolve(f.value.v).then(c, l)
       : d(o[0][2], f)
   }
@@ -1035,7 +1035,7 @@ function oi(e) {
   return _(e?.then)
 }
 function si(e) {
-  return _(e[Xt])
+  return _(e[en])
 }
 function ai(e) {
   return Symbol.asyncIterator && _(e?.[Symbol.asyncIterator])
@@ -1059,9 +1059,9 @@ function di(e) {
     let r = e.getReader()
     try {
       for (;;) {
-        let { value: n, done: i } = yield Et(r.read())
-        if (i) return yield Et(void 0)
-        yield yield Et(n)
+        let { value: n, done: i } = yield It(r.read())
+        if (i) return yield It(void 0)
+        yield yield It(n)
       }
     } finally {
       r.releaseLock()
@@ -1085,7 +1085,7 @@ function W(e) {
 }
 function Op(e) {
   return new k((t) => {
-    let r = e[Xt]()
+    let r = e[en]()
     if (_(r.subscribe)) return r.subscribe(t)
     throw new TypeError(
       'Provided object does not correctly implement Symbol.observable',
@@ -1241,14 +1241,14 @@ function Yc(e, t) {
   }
   throw ui(e)
 }
-function H(e, t) {
+function z(e, t) {
   return t ? Yc(e, t) : W(e)
 }
 function I(...e) {
   let t = it(e)
-  return H(e, t)
+  return z(e, t)
 }
-function nn(e, t) {
+function rn(e, t) {
   let r = _(e) ? e : () => e,
     n = (i) => i.error(r())
   return new k(t ? (i) => t.schedule(n, 0, i) : n)
@@ -1256,7 +1256,7 @@ function nn(e, t) {
 function fs(e) {
   return !!e && (e instanceof k || (_(e.lift) && _(e.subscribe)))
 }
-var Ze = Yt(
+var Ye = Qt(
   (e) =>
     function () {
       e(this),
@@ -1304,7 +1304,7 @@ function Di(...e) {
   let t = it(e),
     r = ri(e),
     { args: n, keys: i } = vi(e)
-  if (n.length === 0) return H([], t)
+  if (n.length === 0) return z([], t)
   let o = new k(qp(n, t, i ? (s) => yi(i, s) : me))
   return r ? o.pipe(mi(r)) : o
 }
@@ -1321,7 +1321,7 @@ function qp(e, t, r = me) {
           Qc(
             t,
             () => {
-              let c = H(e[u], t),
+              let c = z(e[u], t),
                 l = !1
               c.subscribe(
                 N(
@@ -1404,8 +1404,8 @@ function hs(e = 1 / 0) {
 function Jc() {
   return hs(1)
 }
-function rn(...e) {
-  return Jc()(H(e, it(e)))
+function on(...e) {
+  return Jc()(z(e, it(e)))
 }
 function wi(e) {
   return new k((t) => {
@@ -1502,7 +1502,7 @@ function st(e) {
     )
   })
 }
-function Ye(e) {
+function Qe(e) {
   return e <= 0
     ? () => ve
     : F((t, r) => {
@@ -1532,9 +1532,9 @@ function Ci(e = Wp) {
   })
 }
 function Wp() {
-  return new Ze()
+  return new Ye()
 }
-function It(e) {
+function bt(e) {
   return F((t, r) => {
     try {
       t.subscribe(r)
@@ -1548,11 +1548,11 @@ function Le(e, t) {
   return (n) =>
     n.pipe(
       e ? ye((i, o) => e(i, o, n)) : me,
-      Ye(1),
-      r ? st(t) : Ci(() => new Ze()),
+      Qe(1),
+      r ? st(t) : Ci(() => new Ye()),
     )
 }
-function on(e) {
+function sn(e) {
   return e <= 0
     ? () => ve
     : F((t, r) => {
@@ -1580,8 +1580,8 @@ function ms(e, t) {
   return (n) =>
     n.pipe(
       e ? ye((i, o) => e(i, o, n)) : me,
-      on(1),
-      r ? st(t) : Ci(() => new Ze()),
+      sn(1),
+      r ? st(t) : Ci(() => new Ye()),
     )
 }
 function vs(e, t) {
@@ -1590,7 +1590,7 @@ function vs(e, t) {
 function ys(...e) {
   let t = it(e)
   return F((r, n) => {
-    ;(t ? rn(e, r, t) : rn(e, r)).subscribe(n)
+    ;(t ? on(e, r, t) : on(e, r)).subscribe(n)
   })
 }
 function De(e, t) {
@@ -1677,8 +1677,8 @@ function Zi(e) {
   return { toString: e }.toString()
 }
 var Yn = globalThis
-function V(e) {
-  for (let t in e) if (e[t] === V) return t
+function j(e) {
+  for (let t in e) if (e[t] === j) return t
   throw Error('Could not find renamed property on target object.')
 }
 function Qp(e, t) {
@@ -1705,10 +1705,10 @@ function el(e, t) {
       ? e
       : e + ' ' + t
 }
-var Kp = V({ __forward_ref__: V })
-function wn(e) {
+var Kp = j({ __forward_ref__: j })
+function Cn(e) {
   return (
-    (e.__forward_ref__ = wn),
+    (e.__forward_ref__ = Cn),
     (e.toString = function () {
       return fe(this())
     }),
@@ -1720,7 +1720,7 @@ function ae(e) {
 }
 function Pl(e) {
   return (
-    typeof e == 'function' && e.hasOwnProperty(Kp) && e.__forward_ref__ === wn
+    typeof e == 'function' && e.hasOwnProperty(Kp) && e.__forward_ref__ === Cn
   )
 }
 function D(e) {
@@ -1731,7 +1731,7 @@ function D(e) {
     value: void 0,
   }
 }
-function Ot(e) {
+function Ft(e) {
   return { providers: e.providers || [], imports: e.imports || [] }
 }
 function Yi(e) {
@@ -1750,10 +1750,10 @@ function Jp(e) {
 function nl(e) {
   return e && (e.hasOwnProperty(rl) || e.hasOwnProperty(Xp)) ? e[rl] : null
 }
-var Ll = V({ ɵprov: V }),
-  rl = V({ ɵinj: V }),
-  Vl = V({ ngInjectableDef: V }),
-  Xp = V({ ngInjectorDef: V }),
+var Ll = j({ ɵprov: j }),
+  rl = j({ ɵinj: j }),
+  Vl = j({ ngInjectableDef: j }),
+  Xp = j({ ngInjectorDef: j }),
   C = class {
     constructor(t, r) {
       ;(this._desc = t),
@@ -1778,13 +1778,13 @@ var Ll = V({ ɵprov: V }),
 function jl(e) {
   return e && !!e.ɵproviders
 }
-var eg = V({ ɵcmp: V }),
-  tg = V({ ɵdir: V }),
-  ng = V({ ɵpipe: V }),
-  rg = V({ ɵmod: V }),
-  Ai = V({ ɵfac: V }),
-  Qn = V({ __NG_ELEMENT_ID__: V }),
-  il = V({ __NG_ENV_ID__: V })
+var eg = j({ ɵcmp: j }),
+  tg = j({ ɵdir: j }),
+  ng = j({ ɵpipe: j }),
+  rg = j({ ɵmod: j }),
+  Ai = j({ ɵfac: j }),
+  Qn = j({ __NG_ELEMENT_ID__: j }),
+  il = j({ __NG_ENV_ID__: j })
 function Ul(e) {
   return typeof e == 'string' ? e : e == null ? '' : String(e)
 }
@@ -1836,19 +1836,19 @@ var sg = {},
   cg = /\n/gm,
   lg = '\u0275',
   ol = '__source',
-  cn
+  ln
 function dg() {
-  return cn
+  return ln
 }
 function at(e) {
-  let t = cn
-  return (cn = e), t
+  let t = ln
+  return (ln = e), t
 }
 function fg(e, t = x.Default) {
-  if (cn === void 0) throw new w(-203, !1)
-  return cn === null
+  if (ln === void 0) throw new w(-203, !1)
+  return ln === null
     ? Bl(e, void 0, t)
-    : cn.get(e, t & x.Optional ? null : void 0, t)
+    : ln.get(e, t & x.Optional ? null : void 0, t)
 }
 function S(e, t = x.Default) {
   return ($l() || fg)(ae(e), t)
@@ -1924,7 +1924,7 @@ function gg(e, t, r, n = null) {
   `,
   )}`
 }
-function dn(e, t) {
+function fn(e, t) {
   let r = e.hasOwnProperty(Ai)
   return r ? e[Ai] : null
 }
@@ -1971,9 +1971,9 @@ function yg(e, t, r) {
   }
   return ~(i << r)
 }
-var fn = {},
+var hn = {},
   Ie = [],
-  hn = new C(''),
+  pn = new C(''),
   zl = new C('', -1),
   Gl = new C(''),
   Ri = class {
@@ -2288,12 +2288,12 @@ function dt(e) {
   })
 }
 function Rg(e) {
-  return _t(e) || Zl(e)
+  return St(e) || Zl(e)
 }
 function Og(e) {
   return e !== null
 }
-function Ft(e) {
+function Pt(e) {
   return Zi(() => ({
     type: e.type,
     bootstrap: e.bootstrap || Ie,
@@ -2306,7 +2306,7 @@ function Ft(e) {
   }))
 }
 function ul(e, t) {
-  if (e == null) return fn
+  if (e == null) return hn
   let r = {}
   for (let n in e)
     if (e.hasOwnProperty(n)) {
@@ -2327,7 +2327,7 @@ function He(e) {
     return Xl(t), t
   })
 }
-function _t(e) {
+function St(e) {
   return e[eg] || null
 }
 function Zl(e) {
@@ -2337,7 +2337,7 @@ function Yl(e) {
   return e[ng] || null
 }
 function Ql(e) {
-  let t = _t(e) || Zl(e) || Yl(e)
+  let t = St(e) || Zl(e) || Yl(e)
   return t !== null ? t.standalone : !1
 }
 function Kl(e, t) {
@@ -2358,7 +2358,7 @@ function Jl(e) {
     contentQueries: e.contentQueries || null,
     declaredInputs: t,
     inputTransforms: null,
-    inputConfig: e.inputs || fn,
+    inputConfig: e.inputs || hn,
     exportAs: e.exportAs || null,
     standalone: e.standalone === !0,
     signals: e.signals === !0,
@@ -2404,7 +2404,7 @@ function Fg(e) {
   for (let i of r) t = (Math.imul(31, t) + i.charCodeAt(0)) << 0
   return (t += 2147483648), 'c' + t
 }
-function Cn(e) {
+function En(e) {
   return { ɵproviders: e }
 }
 function Pg(...e) {
@@ -2438,7 +2438,7 @@ function js(e, t, r, n) {
   if (((e = ae(e)), !e)) return !1
   let i = null,
     o = nl(e),
-    s = !o && _t(e)
+    s = !o && St(e)
   if (!o && !s) {
     let u = e.ngModule
     if (((o = nl(u)), o)) i = u
@@ -2468,10 +2468,10 @@ function js(e, t, r, n) {
       c !== void 0 && td(c, t)
     }
     if (!a) {
-      let c = dn(i) || (() => new i())
+      let c = fn(i) || (() => new i())
       t({ provide: i, useFactory: c, deps: Ie }, i),
         t({ provide: Gl, useValue: i, multi: !0 }, i),
-        t({ provide: hn, useValue: () => S(i), multi: !0 }, i)
+        t({ provide: pn, useValue: () => S(i), multi: !0 }, i)
     }
     let u = o.providers
     if (u != null && !a) {
@@ -2487,7 +2487,7 @@ function Sa(e, t) {
   for (let r of e)
     jl(r) && (r = r.ɵproviders), Array.isArray(r) ? Sa(r, t) : t(r)
 }
-var kg = V({ provide: String, useValue: V })
+var kg = j({ provide: String, useValue: j })
 function nd(e) {
   return e !== null && typeof e == 'object' && kg in e
 }
@@ -2497,7 +2497,7 @@ function Lg(e) {
 function Vg(e) {
   return !!(e && e.useFactory)
 }
-function pn(e) {
+function gn(e) {
   return typeof e == 'function'
 }
 function jg(e) {
@@ -2525,8 +2525,8 @@ var he = class {},
         (this._onDestroyHooks = []),
         (this._destroyed = !1),
         $s(t, (s) => this.processProvider(s)),
-        this.records.set(zl, sn(void 0, this)),
-        i.has('environment') && this.records.set(he, sn(void 0, this))
+        this.records.set(zl, an(void 0, this)),
+        i.has('environment') && this.records.set(he, an(void 0, this))
       let o = this.records.get(Ki)
       o != null && typeof o.value == 'string' && this.scopes.add(o.value),
         (this.injectorDefTypes = new Set(this.get(Gl, Ie, x.Self)))
@@ -2576,7 +2576,7 @@ var he = class {},
           if (u === void 0) {
             let c = Gg(t) && Yi(t)
             c && this.injectableDefInScope(c)
-              ? (u = sn(Us(t), bi))
+              ? (u = an(Us(t), bi))
               : (u = null),
               this.records.set(t, u)
           }
@@ -2599,7 +2599,7 @@ var he = class {},
         n = Ee(void 0),
         i
       try {
-        let o = this.get(hn, Ie, x.Self)
+        let o = this.get(pn, Ie, x.Self)
         for (let s of o) s()
       } finally {
         at(r), Ee(n), O(t)
@@ -2616,12 +2616,12 @@ var he = class {},
     }
     processProvider(t) {
       t = ae(t)
-      let r = pn(t) ? t : ae(t && t.provide),
+      let r = gn(t) ? t : ae(t && t.provide),
         n = Bg(t)
-      if (!pn(t) && t.multi === !0) {
+      if (!gn(t) && t.multi === !0) {
         let i = this.records.get(r)
         i ||
-          ((i = sn(void 0, bi, !0)),
+          ((i = an(void 0, bi, !0)),
           (i.factory = () => Ls(i.multi)),
           this.records.set(r, i)),
           (r = t),
@@ -2658,7 +2658,7 @@ var he = class {},
   }
 function Us(e) {
   let t = Yi(e),
-    r = t !== null ? t.factory : dn(e)
+    r = t !== null ? t.factory : fn(e)
   if (r !== null) return r
   if (e instanceof C) throw new w(204, !1)
   if (e instanceof Function) return $g(e)
@@ -2670,28 +2670,28 @@ function $g(e) {
   return r !== null ? () => r.factory(e) : () => new e()
 }
 function Bg(e) {
-  if (nd(e)) return sn(void 0, e.useValue)
+  if (nd(e)) return an(void 0, e.useValue)
   {
     let t = rd(e)
-    return sn(t, bi)
+    return an(t, bi)
   }
 }
 function rd(e, t, r) {
   let n
-  if (pn(e)) {
+  if (gn(e)) {
     let i = ae(e)
-    return dn(i) || Us(i)
+    return fn(i) || Us(i)
   } else if (nd(e)) n = () => ae(e.useValue)
   else if (Vg(e)) n = () => e.useFactory(...Ls(e.deps || []))
   else if (Lg(e)) n = () => S(ae(e.useExisting))
   else {
     let i = ae(e && (e.useClass || e.provide))
     if (Hg(e)) n = () => new i(...Ls(e.deps))
-    else return dn(i) || Us(i)
+    else return fn(i) || Us(i)
   }
   return n
 }
-function sn(e, t, r = !1) {
+function an(e, t, r = !1) {
   return { factory: e, value: t, multi: r ? [] : void 0 }
 }
 function Hg(e) {
@@ -2709,7 +2709,7 @@ function $s(e, t) {
   for (let r of e)
     Array.isArray(r) ? $s(r, t) : r && jl(r) ? $s(r.ɵproviders, t) : t(r)
 }
-function Je(e, t) {
+function Xe(e, t) {
   e instanceof Xn && e.assertNotDestroyed()
   let r,
     n = at(e),
@@ -2726,7 +2726,7 @@ function qg() {
 function Wg(e) {
   return typeof e == 'function'
 }
-var Xe = 0,
+var et = 0,
   A = 1,
   E = 2,
   re = 3,
@@ -2735,24 +2735,24 @@ var Xe = 0,
   er = 6,
   tr = 7,
   ce = 8,
-  gn = 9,
+  mn = 9,
   $e = 10,
   K = 11,
   nr = 12,
   ll = 13,
-  En = 14,
+  In = 14,
   Re = 15,
   Ji = 16,
-  an = 17,
-  mn = 18,
+  un = 17,
+  vn = 18,
   Xi = 19,
   id = 20,
   ut = 21,
   Es = 22,
-  St = 23,
+  Tt = 23,
   Oe = 25,
   od = 1
-var Tt = 7,
+var At = 7,
   Oi = 8,
   Fi = 9,
   le = 10,
@@ -2763,10 +2763,10 @@ var Tt = 7,
       e
     )
   })(Aa || {})
-function bt(e) {
+function Mt(e) {
   return Array.isArray(e) && typeof e[od] == 'object'
 }
-function et(e) {
+function tt(e) {
   return Array.isArray(e) && e[od] === !0
 }
 function sd(e) {
@@ -2795,30 +2795,30 @@ var Bs = class {
 function ad(e, t, r, n) {
   t !== null ? t.applyValueToInputSignal(t, n) : (e[r] = n)
 }
-function In() {
+function bn() {
   return ud
 }
 function ud(e) {
   return e.type.prototype.ngOnChanges && (e.setInput = Qg), Yg
 }
-In.ngInherit = !0
+bn.ngInherit = !0
 function Yg() {
   let e = ld(this),
     t = e?.current
   if (t) {
     let r = e.previous
-    if (r === fn) e.previous = t
+    if (r === hn) e.previous = t
     else for (let n in t) r[n] = t[n]
     ;(e.current = null), this.ngOnChanges(t)
   }
 }
 function Qg(e, t, r, n, i) {
   let o = this.declaredInputs[n],
-    s = ld(e) || Kg(e, { previous: fn, current: null }),
+    s = ld(e) || Kg(e, { previous: hn, current: null }),
     a = s.current || (s.current = {}),
     u = s.previous,
     c = u[o]
-  ;(a[o] = new Bs(c && c.currentValue, r, u === fn)), ad(e, t, i, r)
+  ;(a[o] = new Bs(c && c.currentValue, r, u === hn)), ad(e, t, i, r)
 }
 var cd = '__ngSimpleChanges__'
 function ld(e) {
@@ -2838,7 +2838,7 @@ function tm() {
   return em
 }
 function Be(e) {
-  for (; Array.isArray(e); ) e = e[Xe]
+  for (; Array.isArray(e); ) e = e[et]
   return e
 }
 function dd(e, t) {
@@ -2852,29 +2852,29 @@ function Na(e, t) {
 }
 function ft(e, t) {
   let r = t[e]
-  return bt(r) ? r : r[Xe]
+  return Mt(r) ? r : r[et]
 }
 function Ra(e) {
   return (e[E] & 128) === 128
 }
 function nm(e) {
-  return et(e[re])
+  return tt(e[re])
 }
 function Pi(e, t) {
   return t == null ? null : e[t]
 }
 function fd(e) {
-  e[an] = 0
+  e[un] = 0
 }
 function rm(e) {
   e[E] & 1024 || ((e[E] |= 1024), Ra(e) && rr(e))
 }
 function im(e, t) {
-  for (; e > 0; ) (t = t[En]), e--
+  for (; e > 0; ) (t = t[In]), e--
   return t
 }
 function Oa(e) {
-  return !!(e[E] & 9216 || e[St]?.dirty)
+  return !!(e[E] & 9216 || e[Tt]?.dirty)
 }
 function Hs(e) {
   e[$e].changeDetectionScheduler?.notify(1),
@@ -2901,7 +2901,7 @@ function om(e, t) {
 }
 function ir(e) {
   let t = e[re]
-  return et(t) ? t[re] : t
+  return tt(t) ? t[re] : t
 }
 var P = { lFrame: wd(null), bindingsEnabled: !0, skipHydrationRootTNode: null }
 function sm() {
@@ -2994,7 +2994,7 @@ function yd(e, t, r) {
     let i = t,
       o = e
     for (; (i = i.parent), i === null && !(r & x.Host); )
-      if (((i = wm(o)), i === null || ((o = o[En]), i.type & 10))) break
+      if (((i = wm(o)), i === null || ((o = o[In]), i.type & 10))) break
     if (i === null) return !1
     ;(t = i), (e = o)
   }
@@ -3058,10 +3058,10 @@ function Pa() {
 function Cm(e) {
   return (P.lFrame.contextLView = im(e, P.lFrame.contextLView))[ce]
 }
-function Pt() {
+function kt() {
   return P.lFrame.selectedIndex
 }
-function At(e) {
+function xt(e) {
   P.lFrame.selectedIndex = e
 }
 function Id() {
@@ -3121,7 +3121,7 @@ function Is(e, t) {
   ;(r & 3) === t && ((r &= 16383), (r += 1), (e[E] = r))
 }
 function Md(e, t, r, n) {
-  let i = n !== void 0 ? e[an] & 65535 : 0,
+  let i = n !== void 0 ? e[un] & 65535 : 0,
     o = n ?? -1,
     s = t.length - 1,
     a = 0
@@ -3129,9 +3129,9 @@ function Md(e, t, r, n) {
     if (typeof t[u + 1] == 'number') {
       if (((a = t[u]), n != null && a >= n)) break
     } else
-      t[u] < 0 && (e[an] += 65536),
+      t[u] < 0 && (e[un] += 65536),
         (a < o || o == -1) &&
-          (bm(e, r, t, u), (e[an] = (e[an] & 4294901760) + u + 2)),
+          (bm(e, r, t, u), (e[un] = (e[un] & 4294901760) + u + 2)),
         u++
 }
 function fl(e, t) {
@@ -3149,13 +3149,13 @@ function bm(e, t, r, n) {
     s = i ? -r[n] : r[n],
     a = e[s]
   i
-    ? e[E] >> 14 < e[an] >> 16 &&
+    ? e[E] >> 14 < e[un] >> 16 &&
       (e[E] & 3) === t &&
       ((e[E] += 16384), fl(a, o))
     : fl(a, o)
 }
-var ln = -1,
-  xt = class {
+var dn = -1,
+  Nt = class {
     constructor(t, r, n) {
       ;(this.factory = t),
         (this.resolving = !1),
@@ -3164,7 +3164,7 @@ var ln = -1,
     }
   }
 function Mm(e) {
-  return e instanceof xt
+  return e instanceof Nt
 }
 function _m(e) {
   return (e.flags & 8) !== 0
@@ -3173,7 +3173,7 @@ function Sm(e) {
   return (e.flags & 16) !== 0
 }
 function _d(e) {
-  return e !== ln
+  return e !== dn
 }
 function ki(e) {
   return e & 32767
@@ -3184,7 +3184,7 @@ function Tm(e) {
 function Li(e, t) {
   let r = Tm(e),
     n = t
-  for (; r > 0; ) (n = n[En]), r--
+  for (; r > 0; ) (n = n[In]), r--
   return n
 }
 var Gs = !0
@@ -3242,11 +3242,11 @@ function ja(e, t) {
     n = null,
     i = t
   for (; i !== null; ) {
-    if (((n = Fd(i)), n === null)) return ln
-    if ((r++, (i = i[En]), n.injectorIndex !== -1))
+    if (((n = Fd(i)), n === null)) return dn
+    if ((r++, (i = i[In]), n.injectorIndex !== -1))
       return n.injectorIndex | (r << 16)
   }
-  return ln
+  return dn
 }
 function qs(e, t, r) {
   Nm(e, t, r)
@@ -3259,7 +3259,7 @@ function Nd(e, t, r, n) {
   if (
     (r & x.Optional && n === void 0 && (n = null), !(r & (x.Self | x.Host)))
   ) {
-    let i = e[gn],
+    let i = e[mn],
       o = Ee(void 0)
     try {
       return i ? i.get(t, n, r & x.Optional) : Bl(t, n, r & x.Optional)
@@ -3294,12 +3294,12 @@ function Od(e, t, r, n, i) {
   } else if (typeof o == 'number') {
     let s = null,
       a = Ad(e, t),
-      u = ln,
+      u = dn,
       c = n & x.Host ? t[Re][Fe] : null
     for (
       (a === -1 || n & x.SkipSelf) &&
       ((u = a === -1 ? ja(e, t) : t[a + 8]),
-      u === ln || !gl(n, !1)
+      u === dn || !gl(n, !1)
         ? (a = -1)
         : ((s = t[A]), (a = ki(u)), (t = Li(u, t))));
       a !== -1;
@@ -3311,7 +3311,7 @@ function Od(e, t, r, n, i) {
         if (d !== je) return d
       }
       ;(u = t[a + 8]),
-        u !== ln && gl(n, t[A].data[a + 8] === c) && pl(o, a, t)
+        u !== dn && gl(n, t[A].data[a + 8] === c) && pl(o, a, t)
           ? ((s = l), (a = ki(u)), (t = Li(u, t)))
           : (a = -1)
     }
@@ -3324,7 +3324,7 @@ function Rm(e, t, r, n, i, o) {
     u = n == null ? eo(a) && Gs : n != s && (a.type & 3) !== 0,
     c = i & x.Host && o === a,
     l = Om(a, s, r, u, c)
-  return l !== null ? vn(t, s, l, a) : je
+  return l !== null ? yn(t, s, l, a) : je
 }
 function Om(e, t, r, n, i) {
   let o = e.providerIndexes,
@@ -3345,7 +3345,7 @@ function Om(e, t, r, n, i) {
   }
   return null
 }
-function vn(e, t, r, n) {
+function yn(e, t, r, n) {
   let i = e[r],
     o = t.data
   if (Mm(i)) {
@@ -3377,7 +3377,7 @@ function pl(e, t, r) {
 function gl(e, t) {
   return !(e & x.Self) && !(e & x.Host && t)
 }
-var Mt = class {
+var _t = class {
   constructor(t, r) {
     ;(this._tNode = t), (this._lView = r)
   }
@@ -3386,9 +3386,9 @@ var Mt = class {
   }
 }
 function Pm() {
-  return new Mt(_e(), B())
+  return new _t(_e(), B())
 }
-function bn(e) {
+function Mn(e) {
   return Zi(() => {
     let t = e.prototype.constructor,
       r = t[Ai] || Ws(t),
@@ -3408,7 +3408,7 @@ function Ws(e) {
         let t = Ws(ae(e))
         return t && t()
       }
-    : dn(e)
+    : fn(e)
 }
 function km(e, t, r, n, i) {
   let o = e,
@@ -3423,7 +3423,7 @@ function km(e, t, r, n, i) {
         let l = c.get(r, je, n)
         if (l !== je) return l
       }
-      ;(u = Fd(s)), (s = s[En])
+      ;(u = Fd(s)), (s = s[In])
     }
     o = u
   }
@@ -3445,7 +3445,7 @@ function Pd(e, t = null, r = null, n, i = new Set()) {
     new Xn(o, t || Ta(), n || null, i)
   )
 }
-var Mn = (() => {
+var _n = (() => {
   let t = class t {
     static create(n, i) {
       if (Array.isArray(n)) return ml({ name: '' }, i, n, '')
@@ -3466,7 +3466,7 @@ var Lm = 'ngOriginalError'
 function Ms(e) {
   return e[Lm]
 }
-var Qe = class {
+var Ke = class {
     constructor() {
       this._console = console
     }
@@ -3483,7 +3483,7 @@ var Qe = class {
   },
   kd = new C('', {
     providedIn: 'root',
-    factory: () => p(Qe).handleError.bind(void 0),
+    factory: () => p(Ke).handleError.bind(void 0),
   }),
   Ld = (() => {
     let t = class t {}
@@ -3506,9 +3506,9 @@ function jm() {
   return Ua(_e(), B())
 }
 function Ua(e, t) {
-  return new kt(Pe(e, t))
+  return new Lt(Pe(e, t))
 }
-var kt = (() => {
+var Lt = (() => {
   let t = class t {
     constructor(n) {
       this.nativeElement = n
@@ -3567,8 +3567,8 @@ function Hm(e) {
   jd.delete(e[Xi])
 }
 var vl = '__ngContext__'
-function Nt(e, t) {
-  bt(t) ? ((e[vl] = t[Xi]), Bm(t)) : (e[vl] = t)
+function Rt(e, t) {
+  Mt(t) ? ((e[vl] = t[Xi]), Bm(t)) : (e[vl] = t)
 }
 function Ud(e) {
   return Bd(e[nr])
@@ -3577,7 +3577,7 @@ function $d(e) {
   return Bd(e[Ne])
 }
 function Bd(e) {
-  for (; e !== null && !et(e); ) e = e[Ne]
+  for (; e !== null && !tt(e); ) e = e[Ne]
   return e
 }
 var Qs
@@ -3621,22 +3621,22 @@ function Ga(e) {
 function Gd(e) {
   return e instanceof Function ? e() : e
 }
-var Ke = (function (e) {
+var Je = (function (e) {
     return (
       (e[(e.Important = 1)] = 'Important'),
       (e[(e.DashCase = 2)] = 'DashCase'),
       e
     )
-  })(Ke || {}),
+  })(Je || {}),
   Qm
 function qa(e, t) {
   return Qm(e, t)
 }
-function un(e, t, r, n, i) {
+function cn(e, t, r, n, i) {
   if (n != null) {
     let o,
       s = !1
-    et(n) ? (o = n) : bt(n) && ((s = !0), (n = n[Xe]))
+    tt(n) ? (o = n) : Mt(n) && ((s = !0), (n = n[et]))
     let a = Be(n)
     e === 0 && r !== null
       ? i == null
@@ -3660,10 +3660,10 @@ function qd(e, t, r) {
   return e.createElement(t, r)
 }
 function Xm(e, t) {
-  Wd(e, t), (t[Xe] = null), (t[Fe] = null)
+  Wd(e, t), (t[et] = null), (t[Fe] = null)
 }
 function ev(e, t, r, n, i, o) {
-  ;(n[Xe] = i), (n[Fe] = t), no(e, n, r, 1, i, o)
+  ;(n[et] = i), (n[Fe] = t), no(e, n, r, 1, i, o)
 }
 function Wd(e, t) {
   t[$e].changeDetectionScheduler?.notify(1), no(e, t, t[K], 2, null, null)
@@ -3673,14 +3673,14 @@ function tv(e) {
   if (!t) return Ss(e[A], e)
   for (; t; ) {
     let r = null
-    if (bt(t)) r = t[nr]
+    if (Mt(t)) r = t[nr]
     else {
       let n = t[le]
       n && (r = n)
     }
     if (!r) {
-      for (; t && !t[Ne] && t !== e; ) bt(t) && Ss(t[A], t), (t = t[re])
-      t === null && (t = e), bt(t) && Ss(t[A], t), (r = t && t[Ne])
+      for (; t && !t[Ne] && t !== e; ) Mt(t) && Ss(t[A], t), (t = t[re])
+      t === null && (t = e), Mt(t) && Ss(t[A], t), (r = t && t[Ne])
     }
     t = r
   }
@@ -3695,7 +3695,7 @@ function nv(e, t, r, n) {
     (t[re] = r)
   let s = t[Ji]
   s !== null && r !== s && rv(s, t)
-  let a = t[mn]
+  let a = t[vn]
   a !== null && a.insertView(e), Hs(t), (t[E] |= 128)
 }
 function rv(e, t) {
@@ -3718,7 +3718,7 @@ function or(e, t) {
     i !== null && i !== e && Zd(i, n), t > 0 && (e[r - 1][Ne] = n[Ne])
     let o = Ni(e, le + t)
     Xm(n[A], n)
-    let s = o[mn]
+    let s = o[vn]
     s !== null && s.detachView(o[A]),
       (n[re] = null),
       (n[Ne] = null),
@@ -3738,14 +3738,14 @@ function Ss(e, t) {
   try {
     ;(t[E] &= -129),
       (t[E] |= 256),
-      t[St] && wc(t[St]),
+      t[Tt] && wc(t[Tt]),
       ov(e, t),
       iv(e, t),
       t[A].type === 1 && t[K].destroy()
     let n = t[Ji]
-    if (n !== null && et(t[re])) {
+    if (n !== null && tt(t[re])) {
       n !== t[re] && Zd(n, t)
-      let i = t[mn]
+      let i = t[vn]
       i !== null && i.detachView(e)
     }
     Hm(t)
@@ -3780,7 +3780,7 @@ function ov(e, t) {
   if (e != null && (r = e.destroyHooks) != null)
     for (let n = 0; n < r.length; n += 2) {
       let i = t[r[n]]
-      if (!(i instanceof xt)) {
+      if (!(i instanceof Nt)) {
         let o = r[n + 1]
         if (Array.isArray(o))
           for (let s = 0; s < o.length; s += 2) {
@@ -3810,7 +3810,7 @@ function sv(e, t, r) {
 function av(e, t, r) {
   let n = t
   for (; n !== null && n.type & 40; ) (t = n), (n = t.parent)
-  if (n === null) return r[Xe]
+  if (n === null) return r[et]
   {
     let { componentOffset: i } = n
     if (i > -1) {
@@ -3867,7 +3867,7 @@ function Si(e, t) {
       if (n !== null) return Si(e, n)
       {
         let i = e[t.index]
-        return et(i) ? Js(-1, i) : Be(i)
+        return tt(i) ? Js(-1, i) : Be(i)
       }
     } else {
       if (r & 32) return qa(t, e)() || Be(e[t.index])
@@ -3898,7 +3898,7 @@ function Js(e, t) {
       i = n[A].firstChild
     if (i !== null) return Si(n, i)
   }
-  return t[Tt]
+  return t[At]
 }
 function hv(e, t, r) {
   let n = Wa(e, t)
@@ -3909,16 +3909,16 @@ function Ya(e, t, r, n, i, o, s) {
     let a = n[r.index],
       u = r.type
     if (
-      (s && t === 0 && (a && Nt(Be(a), n), (r.flags |= 2)),
+      (s && t === 0 && (a && Rt(Be(a), n), (r.flags |= 2)),
       (r.flags & 32) !== 32)
     )
-      if (u & 8) Ya(e, t, r.child, n, i, o, !1), un(t, e, i, a, o)
+      if (u & 8) Ya(e, t, r.child, n, i, o, !1), cn(t, e, i, a, o)
       else if (u & 32) {
         let c = qa(r, n),
           l
-        for (; (l = c()); ) un(t, e, i, l, o)
-        un(t, e, i, a, o)
-      } else u & 16 ? pv(e, t, n, r, i, o) : un(t, e, i, a, o)
+        for (; (l = c()); ) cn(t, e, i, l, o)
+        cn(t, e, i, a, o)
+      } else u & 16 ? pv(e, t, n, r, i, o) : cn(t, e, i, a, o)
     r = s ? r.projectionNext : r.next
   }
 }
@@ -3931,7 +3931,7 @@ function pv(e, t, r, n, i, o) {
   if (Array.isArray(u))
     for (let c = 0; c < u.length; c++) {
       let l = u[c]
-      un(t, e, i, l, o)
+      cn(t, e, i, l, o)
     }
   else {
     let c = u,
@@ -3940,9 +3940,9 @@ function pv(e, t, r, n, i, o) {
   }
 }
 function gv(e, t, r, n, i) {
-  let o = r[Tt],
+  let o = r[At],
     s = Be(r)
-  o !== s && un(t, e, n, o, i)
+  o !== s && cn(t, e, n, o, i)
   for (let a = le; a < r.length; a++) {
     let u = r[a]
     no(u[A], u, e, t, n, o)
@@ -3951,12 +3951,12 @@ function gv(e, t, r, n, i) {
 function mv(e, t, r, n, i) {
   if (t) i ? e.addClass(r, n) : e.removeClass(r, n)
   else {
-    let o = n.indexOf('-') === -1 ? void 0 : Ke.DashCase
+    let o = n.indexOf('-') === -1 ? void 0 : Je.DashCase
     i == null
       ? e.removeStyle(r, n, o)
       : (typeof i == 'string' &&
           i.endsWith('!important') &&
-          ((i = i.slice(0, -10)), (o |= Ke.Important)),
+          ((i = i.slice(0, -10)), (o |= Je.Important)),
         e.setStyle(r, n, i, o))
   }
 }
@@ -3972,9 +3972,9 @@ function Jd(e, t, r) {
     i !== null && Kd(e, t, i),
     o !== null && vv(e, t, o)
 }
-var _n = {}
+var Sn = {}
 function ie(e = 1) {
-  Xd(Me(), B(), Pt() + e, !1)
+  Xd(Me(), B(), kt() + e, !1)
 }
 function Xd(e, t, r, n) {
   if (!n)
@@ -3985,7 +3985,7 @@ function Xd(e, t, r, n) {
       let o = e.preOrderHooks
       o !== null && _i(t, o, 0, r)
     }
-  At(r)
+  xt(r)
 }
 function J(e, t = x.Default) {
   let r = B()
@@ -3997,7 +3997,7 @@ function ef(e, t, r, n, i, o) {
   let s = O(null)
   try {
     let a = null
-    i & be.SignalBased && (a = t[n][We]),
+    i & be.SignalBased && (a = t[n][Ze]),
       a !== null && a.transformFn !== void 0 && (o = a.transformFn(o)),
       i & be.HasDecoratorInputTransform &&
         (o = e.inputTransforms[n].call(t, o)),
@@ -4012,7 +4012,7 @@ function yv(e, t) {
     try {
       for (let n = 0; n < r.length; n++) {
         let i = r[n]
-        if (i < 0) At(~i)
+        if (i < 0) xt(~i)
         else {
           let o = i,
             s = r[++n],
@@ -4023,21 +4023,21 @@ function yv(e, t) {
         }
       }
     } finally {
-      At(-1)
+      xt(-1)
     }
 }
 function ro(e, t, r, n, i, o, s, a, u, c, l) {
   let d = t.blueprint.slice()
   return (
-    (d[Xe] = i),
+    (d[et] = i),
     (d[E] = n | 4 | 128 | 8 | 64),
     (c !== null || (e && e[E] & 2048)) && (d[E] |= 2048),
     fd(d),
-    (d[re] = d[En] = e),
+    (d[re] = d[In] = e),
     (d[ce] = r),
     (d[$e] = s || (e && e[$e])),
     (d[K] = a || (e && e[K])),
-    (d[gn] = u || (e && e[gn]) || null),
+    (d[mn] = u || (e && e[mn]) || null),
     (d[Fe] = o),
     (d[Xi] = $m()),
     (d[er] = l),
@@ -4077,12 +4077,12 @@ function tf(e, t, r, n) {
   return i
 }
 function nf(e, t, r, n, i) {
-  let o = Pt(),
+  let o = kt(),
     s = n & 2
   try {
-    At(-1), s && t.length > Oe && Xd(e, t, Oe, !1), Ve(s ? 2 : 0, i), r(n, i)
+    xt(-1), s && t.length > Oe && Xd(e, t, Oe, !1), Ve(s ? 2 : 0, i), r(n, i)
   } finally {
-    At(o), Ve(s ? 3 : 1, i)
+    xt(o), Ve(s ? 3 : 1, i)
   }
 }
 function rf(e, t, r) {
@@ -4176,7 +4176,7 @@ function Qa(e, t, r, n, i, o, s, a, u, c, l) {
 }
 function wv(e, t) {
   let r = []
-  for (let n = 0; n < t; n++) r.push(n < e ? null : _n)
+  for (let n = 0; n < t; n++) r.push(n < e ? null : Sn)
   return r
 }
 function Cv(e, t, r, n) {
@@ -4371,14 +4371,14 @@ function xv(e, t, r, n) {
     o = r.directiveEnd
   eo(r) && Lv(t, r, e.data[i + r.componentOffset]),
     e.firstCreatePass || Vi(r, t),
-    Nt(n, t)
+    Rt(n, t)
   let s = r.initialInputs
   for (let a = i; a < o; a++) {
     let u = e.data[a],
-      c = vn(t, e, a, r)
-    if ((Nt(c, t), s !== null && Vv(t, a - i, c, u, r, s), ct(u))) {
+      c = yn(t, e, a, r)
+    if ((Rt(c, t), s !== null && Vv(t, a - i, c, u, r, s), ct(u))) {
       let l = ft(r.index, t)
-      l[ce] = vn(t, e, a, r)
+      l[ce] = yn(t, e, a, r)
     }
   }
 }
@@ -4388,7 +4388,7 @@ function df(e, t, r) {
     o = r.index,
     s = ym()
   try {
-    At(o)
+    xt(o)
     for (let a = n; a < i; a++) {
       let u = e.data[a],
         c = t[a]
@@ -4397,7 +4397,7 @@ function df(e, t, r) {
           Nv(u, c)
     }
   } finally {
-    At(-1), zs(s)
+    xt(-1), zs(s)
   }
 }
 function Nv(e, t) {
@@ -4452,9 +4452,9 @@ function Pv(e, t, r) {
 }
 function kv(e, t, r, n, i) {
   e.data[n] = i
-  let o = i.factory || (i.factory = dn(i.type, !0)),
-    s = new xt(o, ct(i), J)
-  ;(e.blueprint[n] = s), (r[n] = s), Tv(e, t, n, tf(e, r, i.hostVars, _n), i)
+  let o = i.factory || (i.factory = fn(i.type, !0)),
+    s = new Nt(o, ct(i), J)
+  ;(e.blueprint[n] = s), (r[n] = s), Tv(e, t, n, tf(e, r, i.hostVars, Sn), i)
 }
 function Lv(e, t, r) {
   let n = Pe(t, e),
@@ -4545,8 +4545,8 @@ function $v(e) {
   return e.cleanup || (e.cleanup = [])
 }
 function pf(e, t) {
-  let r = e[gn],
-    n = r ? r.get(Qe, null) : null
+  let r = e[mn],
+    n = r ? r.get(Ke, null) : null
   n && n.handleError(t)
 }
 function Ka(e, t, r, n, i) {
@@ -4567,8 +4567,8 @@ function Hv(e, t) {
   let r = ft(t, e),
     n = r[A]
   zv(n, r)
-  let i = r[Xe]
-  i !== null && r[er] === null && (r[er] = za(i, r[gn])), Ja(n, r, r[ce])
+  let i = r[et]
+  i !== null && r[er] === null && (r[er] = za(i, r[mn])), Ja(n, r, r[ce])
 }
 function zv(e, t) {
   for (let r = t.length; r < e.blueprint.length; r++) t.push(e.blueprint[r])
@@ -4581,7 +4581,7 @@ function Ja(e, t, r) {
     let i = e.template
     i !== null && nf(e, t, i, 1, r),
       e.firstCreatePass && (e.firstCreatePass = !1),
-      t[mn]?.finishViewCreation(e),
+      t[vn]?.finishViewCreation(e),
       e.staticContentQueries && hf(e, t),
       e.staticViewQueries && ea(2, e.viewQuery, r)
     let o = e.components
@@ -4619,8 +4619,8 @@ function Xa(e, t, r, n) {
       ),
       c = e[t.index]
     u[Ji] = c
-    let l = e[mn]
-    return l !== null && (u[mn] = l.createEmbeddedView(o)), Ja(o, u, r), u
+    let l = e[vn]
+    return l !== null && (u[vn] = l.createEmbeddedView(o)), Ja(o, u, r), u
   } finally {
     O(i)
   }
@@ -4637,7 +4637,7 @@ function so(e, t, r, n = !0) {
   if ((nv(i, t, e, r), n)) {
     let s = Js(r, e),
       a = t[K],
-      u = Wa(a, e[Tt])
+      u = Wa(a, e[At])
     u !== null && ev(i, e[Fe], a, t, u, s)
   }
   let o = t[er]
@@ -4650,7 +4650,7 @@ function mf(e, t) {
 function Ui(e, t, r, n, i = !1) {
   for (; r !== null; ) {
     let o = t[r.index]
-    o !== null && n.push(Be(o)), et(o) && qv(o, n)
+    o !== null && n.push(Be(o)), tt(o) && qv(o, n)
     let s = r.type
     if (s & 8) Ui(e, t, r.child, n)
     else if (s & 32) {
@@ -4675,18 +4675,18 @@ function qv(e, t) {
       i = n[A].firstChild
     i !== null && Ui(n[A], n, i, t)
   }
-  e[Tt] !== e[Xe] && t.push(e[Tt])
+  e[At] !== e[et] && t.push(e[At])
 }
 var vf = []
 function Wv(e) {
-  return e[St] ?? Zv(e)
+  return e[Tt] ?? Zv(e)
 }
 function Zv(e) {
   let t = vf.pop() ?? Object.create(Qv)
   return (t.lView = e), t
 }
 function Yv(e) {
-  e.lView[St] !== e && ((e.lView = null), vf.push(e))
+  e.lView[Tt] !== e && ((e.lView = null), vf.push(e))
 }
 var Qv = R(g({}, Qr), {
     consumerIsAlwaysLive: !0,
@@ -4694,7 +4694,7 @@ var Qv = R(g({}, Qr), {
       rr(e.lView)
     },
     consumerOnSignalRead() {
-      this.lView[St] = this
+      this.lView[Tt] = this
     },
   }),
   yf = 100
@@ -4800,7 +4800,7 @@ function Cf(e, t) {
 function ta(e, t) {
   let n = e[A],
     i = e[E],
-    o = e[St],
+    o = e[Tt],
     s = !!(t === 0 && i & 16)
   if (
     ((s ||= !!(i & 64 && t === 0)),
@@ -4829,7 +4829,7 @@ function eu(e) {
   }
   return null
 }
-var yn = class {
+var Dn = class {
   get rootNodes() {
     let t = this._lView,
       r = t[A]
@@ -4855,7 +4855,7 @@ var yn = class {
     if (this._appRef) this._appRef.detachView(this)
     else if (this._attachedToViewContainer) {
       let t = this._lView[re]
-      if (et(t)) {
+      if (tt(t)) {
         let r = t[Oi],
           n = r ? r.indexOf(this) : -1
         n > -1 && (or(t, n), Ni(r, n))
@@ -4917,7 +4917,7 @@ var ia = class {
     return e
   })(),
   ur = class {},
-  Sn = (() => {
+  Tn = (() => {
     let t = class t {
       constructor() {
         this.destroyNode = null
@@ -4931,7 +4931,7 @@ function oy() {
   let e = B(),
     t = _e(),
     r = ft(t.index, e)
-  return (bt(r) ? r : e)[K]
+  return (Mt(r) ? r : e)[K]
 }
 var sy = (() => {
     let t = class t {}
@@ -4941,7 +4941,7 @@ var sy = (() => {
   })(),
   Ts = {}
 var El = new Set()
-function Lt(e) {
+function Vt(e) {
   El.has(e) ||
     (El.add(e),
     performance?.mark?.('mark_feature_usage', { detail: { feature: e } }))
@@ -5160,7 +5160,7 @@ var Bi = class extends ao {
     super(), (this.ngModule = t)
   }
   resolveComponentFactory(t) {
-    let r = _t(t)
+    let r = St(t)
     return new cr(r, this.ngModule)
   }
 }
@@ -5282,7 +5282,7 @@ var aa = class {
         (this._tNode = o),
         (this.previousInputValues = null),
         (this.instance = r),
-        (this.hostView = this.changeDetectorRef = new yn(i, void 0, !1)),
+        (this.hostView = this.changeDetectorRef = new Dn(i, void 0, !1)),
         (this.componentType = t)
     }
     setInput(t, r) {
@@ -5302,7 +5302,7 @@ var aa = class {
       }
     }
     get injector() {
-      return new Mt(this._tNode, this._rootLView)
+      return new _t(this._tNode, this._rootLView)
     }
     destroy() {
       this.hostView.destroy()
@@ -5320,7 +5320,7 @@ function py(e, t, r, n, i, o, s) {
   let a = i[A]
   gy(n, e, t, s)
   let u = null
-  t !== null && (u = za(t, i[gn]))
+  t !== null && (u = za(t, i[mn]))
   let c = o.rendererFactory.createRenderer(t, r),
     l = 16
   r.signals ? (l = 4096) : r.onPush && (l = 64)
@@ -5339,11 +5339,11 @@ function my(e, t, r, n, i, o) {
   lf(a, i, s, r, null, n)
   for (let l = 0; l < r.length; l++) {
     let d = s.directiveStart + l,
-      f = vn(i, a, d, s)
-    Nt(f, i)
+      f = yn(i, a, d, s)
+    Rt(f, i)
   }
-  df(a, i, s), u && Nt(u, i)
-  let c = vn(i, a, s.directiveStart + s.componentOffset, s)
+  df(a, i, s), u && Rt(u, i)
+  let c = yn(i, a, s.directiveStart + s.componentOffset, s)
   if (((e[ce] = i[ce] = c), o !== null)) for (let l of o) l(c, t)
   return rf(a, s, i), c
 }
@@ -5387,7 +5387,7 @@ var Cy = uo,
       return Ua(this._hostTNode, this._hostLView)
     }
     get injector() {
-      return new Mt(this._hostTNode, this._hostLView)
+      return new _t(this._hostTNode, this._hostLView)
     }
     get parentInjector() {
       let t = ja(this._hostTNode, this._hostLView)
@@ -5395,8 +5395,8 @@ var Cy = uo,
         let r = Li(t, this._hostLView),
           n = ki(t),
           i = r[A].data[n + 8]
-        return new Mt(i, r)
-      } else return new Mt(null, this._hostLView)
+        return new _t(i, r)
+      } else return new _t(null, this._hostLView)
     }
     clear() {
       for (; this.length > 0; ) this.remove(this.length - 1)
@@ -5428,13 +5428,13 @@ var Cy = uo,
           (i = m.projectableNodes),
           (o = m.environmentInjector || m.ngModuleRef)
       }
-      let u = s ? t : new cr(_t(t)),
+      let u = s ? t : new cr(St(t)),
         c = n || this.parentInjector
       if (!o && u.ngModule == null) {
         let b = (s ? c : this.parentInjector).get(he, null)
         b && (o = b)
       }
-      let l = _t(u.componentType ?? {}),
+      let l = St(u.componentType ?? {}),
         d = ar(this._lContainer, l?.id ?? null),
         f = d?.firstChild ?? null,
         h = u.create(c, i, f, o)
@@ -5473,7 +5473,7 @@ var Cy = uo,
     detach(t) {
       let r = this._adjustIndex(t, -1),
         n = or(this._lContainer, r)
-      return n && Ni(As(this._lContainer), r) != null ? new yn(n) : null
+      return n && Ni(As(this._lContainer), r) != null ? new Dn(n) : null
     }
     _adjustIndex(t, r = 0) {
       return t ?? this.length + r
@@ -5489,7 +5489,7 @@ function Ey(e, t) {
   let r,
     n = t[e.index]
   return (
-    et(n) ? (r = n) : ((r = ff(n, t, null, e)), (t[e.index] = r), oo(t, r)),
+    tt(n) ? (r = n) : ((r = ff(n, t, null, e)), (t[e.index] = r), oo(t, r)),
     by(r, t, e, n),
     new bf(r, e, t)
   )
@@ -5507,17 +5507,17 @@ function _y(e, t, r) {
   return My(e, t, r)
 }
 function Sy(e, t, r, n) {
-  if (e[Tt]) return
+  if (e[At]) return
   let i
-  r.type & 8 ? (i = Be(n)) : (i = Iy(t, r)), (e[Tt] = i)
+  r.type & 8 ? (i = Be(n)) : (i = Iy(t, r)), (e[At] = i)
 }
 function Ty(e) {
-  return typeof e == 'function' && e[We] !== void 0
+  return typeof e == 'function' && e[Ze] !== void 0
 }
 function co(e, t) {
-  Lt('NgSignals')
+  Vt('NgSignals')
   let r = Sc(e),
-    n = r[We]
+    n = r[Ze]
   return (
     t?.equal && (n.equal = t.equal),
     (r.set = (i) => ns(n, i)),
@@ -5527,10 +5527,10 @@ function co(e, t) {
   )
 }
 function Ay() {
-  let e = this[We]
+  let e = this[Ze]
   if (e.readonlyFn === void 0) {
     let t = () => this()
-    ;(t[We] = e), (e.readonlyFn = t)
+    ;(t[Ze] = e), (e.readonlyFn = t)
   }
   return e.readonlyFn
 }
@@ -5540,7 +5540,7 @@ function Mf(e) {
 function xy(e) {
   return Object.getPrototypeOf(e.prototype).constructor
 }
-function Vt(e) {
+function jt(e) {
   let t = xy(e.type),
     r = !0,
     n = [e]
@@ -5578,7 +5578,7 @@ function Vt(e) {
       if (o)
         for (let s = 0; s < o.length; s++) {
           let a = o[s]
-          a && a.ngInherit && a(e), a === Vt && (r = !1)
+          a && a.ngInherit && a(e), a === jt && (r = !1)
         }
     }
     t = Object.getPrototypeOf(t)
@@ -5611,7 +5611,7 @@ function Ry(e) {
   }
 }
 function Ei(e) {
-  return e === fn ? {} : e === Ie ? [] : e
+  return e === hn ? {} : e === Ie ? [] : e
 }
 function Oy(e, t) {
   let r = e.viewQuery
@@ -5716,7 +5716,7 @@ function nu(e, t, r = null) {
     runEnvironmentInitializers: !0,
   }).injector
 }
-var Tn = (() => {
+var An = (() => {
   let t = class t {
     constructor() {
       ;(this.taskId = 0),
@@ -5749,7 +5749,7 @@ var Tn = (() => {
   let e = t
   return e
 })()
-function An(e, t, r) {
+function xn(e, t, r) {
   let n = e[t]
   return Object.is(n, r) ? !1 : ((e[t] = r), !0)
 }
@@ -5786,7 +5786,7 @@ function dr(e, t, r, n, i, o, s, a) {
     d = c.firstCreatePass ? Ly(l, c, u, t, r, n, i, o, s) : c.data[l]
   pr(d, !1)
   let f = Vy(c, u, d, e)
-  ka() && Za(c, u, f, d), Nt(f, u)
+  ka() && Za(c, u, f, d), Rt(f, u)
   let h = ff(f, u, f, d)
   return (
     (u[l] = h),
@@ -5802,12 +5802,12 @@ function jy(e, t, r, n) {
   return La(!0), t[K].createComment('')
 }
 function Uy(e, t, r, n) {
-  return An(e, gr(), r) ? t + Ul(r) + n : _n
+  return xn(e, gr(), r) ? t + Ul(r) + n : Sn
 }
 function Ii(e, t) {
   return (e << 17) | (t << 2)
 }
-function Rt(e) {
+function Ot(e) {
   return (e >> 17) & 32767
 }
 function $y(e) {
@@ -5819,7 +5819,7 @@ function By(e, t) {
 function da(e) {
   return e | 2
 }
-function Dn(e) {
+function wn(e) {
   return (e & 131068) >> 2
 }
 function xs(e, t) {
@@ -5833,8 +5833,8 @@ function fa(e) {
 }
 function zy(e, t, r, n, i, o) {
   let s = o ? t.classBindings : t.styleBindings,
-    a = Rt(s),
-    u = Dn(s)
+    a = Ot(s),
+    u = wn(s)
   e[n] = r
   let c = !1,
     l
@@ -5844,7 +5844,7 @@ function zy(e, t, r, n, i, o) {
   } else l = r
   if (i)
     if (u !== 0) {
-      let f = Rt(e[a + 1])
+      let f = Ot(e[a + 1])
       ;(e[n + 1] = Ii(f, a)),
         f !== 0 && (e[f + 1] = xs(e[f + 1], n)),
         (e[a + 1] = By(e[a + 1], n))
@@ -5871,13 +5871,13 @@ function Gy(e, t, r, n, i) {
 function Tl(e, t, r, n) {
   let i = e[r + 1],
     o = t === null,
-    s = n ? Rt(i) : Dn(i),
+    s = n ? Ot(i) : wn(i),
     a = !1
   for (; s !== 0 && (a === !1 || o); ) {
     let u = e[s],
       c = e[s + 1]
     qy(u, t) && ((a = !0), (e[s + 1] = n ? fa(c) : da(c))),
-      (s = n ? Rt(c) : Dn(c))
+      (s = n ? Ot(c) : wn(c))
   }
   a && (e[r + 1] = n ? da(i) : fa(i))
 }
@@ -5888,15 +5888,15 @@ function qy(e, t) {
       ? hr(e, t) >= 0
       : !1
 }
-function jt(e, t, r) {
+function Ut(e, t, r) {
   let n = B(),
     i = gr()
-  if (An(n, i, t)) {
+  if (xn(n, i, t)) {
     let o = Me(),
       s = Id()
     uf(o, s, n, e, t, n[K], r, !1)
   }
-  return jt
+  return Ut
 }
 function Al(e, t, r, n, i) {
   let o = t.inputs,
@@ -5910,8 +5910,8 @@ function Wy(e, t, r, n) {
   let i = B(),
     o = Me(),
     s = gm(2)
-  if ((o.firstUpdatePass && Yy(o, e, s, n), t !== _n && An(i, s, t))) {
-    let a = o.data[Pt()]
+  if ((o.firstUpdatePass && Yy(o, e, s, n), t !== Sn && xn(i, s, t))) {
+    let a = o.data[kt()]
     eD(o, a, i, i[K], e, (i[s + 1] = tD(t, r)), n, s)
   }
 }
@@ -5921,7 +5921,7 @@ function Zy(e, t) {
 function Yy(e, t, r, n) {
   let i = e.data
   if (i[r + 1] === null) {
-    let o = i[Pt()],
+    let o = i[kt()],
       s = Zy(e, r)
     nD(o, n) && t === null && !s && (t = !1),
       (t = Qy(i, o, t, n)),
@@ -5952,11 +5952,11 @@ function Qy(e, t, r, n) {
 }
 function Ky(e, t, r) {
   let n = r ? t.classBindings : t.styleBindings
-  if (Dn(n) !== 0) return e[Rt(n)]
+  if (wn(n) !== 0) return e[Ot(n)]
 }
 function Jy(e, t, r, n) {
   let i = r ? t.classBindings : t.styleBindings
-  e[Rt(i)] = n
+  e[Ot(i)] = n
 }
 function Xy(e, t, r) {
   let n,
@@ -5997,10 +5997,10 @@ function eD(e, t, r, n, i, o, s, a) {
   if (!(t.type & 3)) return
   let u = e.data,
     c = u[a + 1],
-    l = Hy(c) ? xl(u, t, r, i, Dn(c), s) : void 0
+    l = Hy(c) ? xl(u, t, r, i, wn(c), s) : void 0
   if (!zi(l)) {
     zi(o) || ($y(c) && (o = xl(u, null, r, i, a, s)))
-    let d = dd(Pt(), r)
+    let d = dd(kt(), r)
     mv(n, s, d, i, o)
   }
 }
@@ -6013,11 +6013,11 @@ function xl(e, t, r, n, i, o) {
       l = c ? u[1] : u,
       d = l === null,
       f = r[i + 1]
-    f === _n && (f = d ? Ie : void 0)
+    f === Sn && (f = d ? Ie : void 0)
     let h = d ? ws(f, n) : l === n ? f : void 0
     if ((c && !zi(h) && (h = ws(u, n)), zi(h) && ((a = h), s))) return a
     let m = e[i + 1]
-    i = s ? Rt(m) : Dn(m)
+    i = s ? Ot(m) : wn(m)
   }
   if (t !== null) {
     let u = o ? t.residualClasses : t.residualStyles
@@ -6185,12 +6185,12 @@ var Gi = class {
   }
 }
 function _f(e, t, r) {
-  Lt('NgControlFlow')
+  Vt('NgControlFlow')
   let n = B(),
     i = gr(),
     o = ya(n, Oe + e),
     s = 0
-  if (An(n, i, t)) {
+  if (xn(n, i, t)) {
     let a = O(null)
     try {
       if ((mf(o, s), t !== -1)) {
@@ -6221,7 +6221,7 @@ var ma = class {
   }
 }
 function Sf(e, t, r, n, i, o, s, a, u, c, l, d, f) {
-  Lt('NgControlFlow')
+  Vt('NgControlFlow')
   let h = u !== void 0,
     m = B(),
     b = a ? s.bind(m[Re][ce]) : s,
@@ -6280,7 +6280,7 @@ var va = class extends ha {
 }
 function Tf(e) {
   let t = O(null),
-    r = Pt()
+    r = kt()
   try {
     let n = B(),
       i = n[A],
@@ -6295,7 +6295,7 @@ function Tf(e) {
     if ((rD(s, e, o.trackByFn), s.updateIndexes(), o.hasEmptyBlock)) {
       let a = gr(),
         u = s.length === 0
-      if (An(n, a, u)) {
+      if (xn(n, a, u)) {
         let c = r + 2,
           l = ya(n, c)
         if (u) {
@@ -6347,14 +6347,14 @@ function U(e, t, r, n) {
     pr(u, !0),
     Jd(a, c, u),
     !ky(u) && ka() && Za(o, i, c, u),
-    sm() === 0 && Nt(c, i),
+    sm() === 0 && Rt(c, i),
     am(),
     l && (of(o, i, u), rf(o, u, i)),
     n !== null && sf(i, u),
     U
   )
 }
-function j() {
+function V() {
   let e = _e()
   md() ? hm() : ((e = e.parent), pr(e, !1))
   let t = e
@@ -6368,11 +6368,11 @@ function j() {
     t.stylesWithoutHost != null &&
       Sm(t) &&
       Al(r, t, B(), t.stylesWithoutHost, !1),
-    j
+    V
   )
 }
-function xn(e, t, r, n) {
-  return U(e, t, r, n), j(), xn
+function Nn(e, t, r, n) {
+  return U(e, t, r, n), V(), Nn
 }
 var aD = (e, t, r, n, i, o) => (La(!0), qd(n, i, Em()))
 var qi = 'en-US'
@@ -6459,7 +6459,7 @@ function Fl(e, t, r, n, i) {
 function iu(e = 1) {
   return Cm(e)
 }
-function z(e, t = '') {
+function H(e, t = '') {
   let r = B(),
     n = Me(),
     i = e + Oe,
@@ -6468,16 +6468,16 @@ function z(e, t = '') {
   ;(r[i] = s), ka() && Za(n, r, s, o), pr(o, !1)
 }
 var dD = (e, t, r, n, i) => (La(!0), Km(t[K], n))
-function tt(e, t, r) {
+function ze(e, t, r) {
   let n = B(),
     i = Uy(n, e, t, r)
-  return i !== _n && Bv(n, Pt(), i), tt
+  return i !== Sn && Bv(n, kt(), i), ze
 }
 function mr(e, t, r) {
   Mf(t) && (t = t())
   let n = B(),
     i = gr()
-  if (An(n, i, t)) {
+  if (xn(n, i, t)) {
     let o = Me(),
       s = Id()
     uf(o, s, n, e, t, n[K], r, !1)
@@ -6508,13 +6508,13 @@ function wa(e, t, r, n, i) {
     let o = Me(),
       s = B(),
       a = _e(),
-      u = pn(e) ? e : ae(e.provide),
+      u = gn(e) ? e : ae(e.provide),
       c = rd(e),
       l = a.providerIndexes & 1048575,
       d = a.directiveStart,
       f = a.providerIndexes >> 20
-    if (pn(e) || !e.multi) {
-      let h = new xt(c, i, J),
+    if (gn(e) || !e.multi) {
+      let h = new Nt(c, i, J),
         m = Fs(u, t, i ? l : l + f, d)
       m === -1
         ? (qs(Vi(a, s), o, u),
@@ -6551,7 +6551,7 @@ function wa(e, t, r, n, i) {
   }
 }
 function Os(e, t, r, n) {
-  let i = pn(t),
+  let i = gn(t),
     o = jg(t)
   if (i || o) {
     let u = (o ? ae(t.useClass) : t).prototype.ngOnDestroy
@@ -6579,7 +6579,7 @@ function pD(e, t, r, n) {
     o
   if (this.providerFactory) {
     let s = this.providerFactory.componentProviders,
-      a = vn(r, r[A], this.providerFactory.index, n)
+      a = yn(r, r[A], this.providerFactory.index, n)
     ;(o = a.slice(0, s)), Ca(i, o)
     for (let u = s; u < a.length; u++) o.push(a[u])
   } else (o = []), Ca(i, o)
@@ -6593,7 +6593,7 @@ function Ca(e, t) {
   return t
 }
 function gD(e, t, r, n, i) {
-  let o = new xt(e, r, J)
+  let o = new Nt(e, r, J)
   return (
     (o.multi = []),
     (o.index = t),
@@ -6641,7 +6641,7 @@ var mD = (() => {
   return e
 })()
 function gt(e) {
-  Lt('NgStandalone'),
+  Vt('NgStandalone'),
     (e.getStandaloneInjector = (t) =>
       t.get(mD).getOrCreateStandaloneInjector(e))
 }
@@ -6662,7 +6662,7 @@ var fo = (() => {
   return e
 })()
 var Nf = new C('')
-function Ut(e) {
+function $t(e) {
   return !!e && typeof e.then == 'function'
 }
 function Rf(e) {
@@ -6684,7 +6684,7 @@ var Of = new C(''),
         let n = []
         for (let o of this.appInits) {
           let s = o()
-          if (Ut(s)) n.push(s)
+          if ($t(s)) n.push(s)
           else if (Rf(s)) {
             let a = new Promise((u, c) => {
               s.subscribe({ complete: u, error: c })
@@ -6725,7 +6725,7 @@ function yD(e) {
 function DD(e, t, r) {
   try {
     let n = r()
-    return Ut(n)
+    return $t(n)
       ? n.catch((i) => {
           throw (t.runOutsideAngular(() => e.handleError(i)), i)
         })
@@ -6734,7 +6734,7 @@ function DD(e, t, r) {
     throw (t.runOutsideAngular(() => e.handleError(n)), n)
   }
 }
-var Nn = (() => {
+var Rn = (() => {
   let t = class t {
     constructor() {
       ;(this._bootstrapListeners = []),
@@ -6749,7 +6749,7 @@ var Nn = (() => {
         (this.afterTick = new se()),
         (this.componentTypes = []),
         (this.components = []),
-        (this.isStable = p(Tn).hasPendingTasks.pipe(M((n) => !n))),
+        (this.isStable = p(An).hasPendingTasks.pipe(M((n) => !n))),
         (this._injector = p(he))
     }
     get destroyed() {
@@ -6770,7 +6770,7 @@ var Nn = (() => {
         this.componentTypes.push(a.componentType)
       let u = yD(a) ? void 0 : this._injector.get(lt),
         c = i || a.selector,
-        l = a.create(Mn.NULL, [], c, u),
+        l = a.create(_n.NULL, [], c, u),
         d = l.location.nativeElement,
         f = l.injector.get(Nf, null)
       return (
@@ -6899,7 +6899,7 @@ var Ia = class {
         let i = this.compileModuleSync(n),
           o = Kl(n),
           s = Gd(o.declarations).reduce((a, u) => {
-            let c = _t(u)
+            let c = St(u)
             return c && a.push(new cr(c)), a
           }, [])
         return new Ia(i, s)
@@ -6921,7 +6921,7 @@ var Ia = class {
 var ED = (() => {
   let t = class t {
     constructor() {
-      ;(this.zone = p(q)), (this.applicationRef = p(Nn))
+      ;(this.zone = p(q)), (this.applicationRef = p(Rn))
     }
     initialize() {
       this._onMicrotaskEmptySubscription ||
@@ -6949,7 +6949,7 @@ function ID(e) {
   return [
     { provide: q, useFactory: e },
     {
-      provide: hn,
+      provide: pn,
       multi: !0,
       useFactory: () => {
         let t = p(ED, { optional: !0 })
@@ -6957,7 +6957,7 @@ function ID(e) {
       },
     },
     {
-      provide: hn,
+      provide: pn,
       multi: !0,
       useFactory: () => {
         let t = p(SD)
@@ -6971,12 +6971,12 @@ function ID(e) {
 }
 function bD() {
   let e = p(q),
-    t = p(Qe)
+    t = p(Ke)
   return (r) => e.runOutsideAngular(() => t.handleError(r))
 }
 function MD(e) {
   let t = ID(() => new q(_D(e)))
-  return Cn([[], t])
+  return En([[], t])
 }
 function _D(e) {
   return {
@@ -6991,7 +6991,7 @@ var SD = (() => {
       ;(this.subscription = new Z()),
         (this.initialized = !1),
         (this.zone = p(q)),
-        (this.pendingTasks = p(Tn))
+        (this.pendingTasks = p(An))
     }
     initialize() {
       if (this.initialized) return
@@ -7041,7 +7041,7 @@ var su = new C('', {
 var Pf = new C('')
 var Ti = null
 function AD(e = [], t) {
-  return Mn.create({
+  return _n.create({
     name: t,
     providers: [
       { provide: Ki, useValue: 'platform' },
@@ -7058,7 +7058,7 @@ function xD(e = []) {
 function ND(e) {
   e.get(Ba, null)?.forEach((r) => r())
 }
-var $t = (() => {
+var Bt = (() => {
   let t = class t {}
   t.__NG_ELEMENT_ID__ = RD
   let e = t
@@ -7070,10 +7070,10 @@ function RD(e) {
 function OD(e, t, r) {
   if (eo(e) && !r) {
     let n = ft(e.index, t)
-    return new yn(n, n)
+    return new Dn(n, n)
   } else if (e.type & 47) {
     let n = t[Re]
-    return new yn(n, t)
+    return new Dn(n, t)
   }
   return null
 }
@@ -7091,7 +7091,7 @@ function kf(e) {
       u = a.get(q)
     return u.run(() => {
       a.resolveInjectorInitializers()
-      let c = a.get(Qe, null),
+      let c = a.get(Ke, null),
         l
       u.runOutsideAngular(() => {
         l = u.onError.subscribe({
@@ -7114,7 +7114,7 @@ function kf(e) {
             h.donePromise.then(() => {
               let m = a.get(su, qi)
               cD(m || qi)
-              let b = a.get(Nn)
+              let b = a.get(Rn)
               return t !== void 0 && b.bootstrap(t), b
             })
           )
@@ -7128,10 +7128,10 @@ function kf(e) {
 function po(e) {
   return typeof e == 'boolean' ? e : e != null && e !== 'false'
 }
-function Rn(e, t) {
-  Lt('NgSignals')
+function mt(e, t) {
+  Vt('NgSignals')
   let r = Ic(e)
-  return t?.equal && (r[We].equal = t.equal), r
+  return t?.equal && (r[Ze].equal = t.equal), r
 }
 var jf = null
 function nt() {
@@ -7246,7 +7246,7 @@ function Lf(e) {
     n = r - (e[r - 1] === '/' ? 1 : 0)
   return e.slice(0, n) + e.slice(r)
 }
-function Bt(e) {
+function Ht(e) {
   return e && e[0] !== '?' ? '?' + e : e
 }
 var mo = (() => {
@@ -7292,16 +7292,16 @@ var mo = (() => {
       }
       path(n = !1) {
         let i =
-            this._platformLocation.pathname + Bt(this._platformLocation.search),
+            this._platformLocation.pathname + Ht(this._platformLocation.search),
           o = this._platformLocation.hash
         return o && n ? `${i}${o}` : i
       }
       pushState(n, i, o, s) {
-        let a = this.prepareExternalUrl(o + Bt(s))
+        let a = this.prepareExternalUrl(o + Ht(s))
         this._platformLocation.pushState(n, i, a)
       }
       replaceState(n, i, o, s) {
-        let a = this.prepareExternalUrl(o + Bt(s))
+        let a = this.prepareExternalUrl(o + Ht(s))
         this._platformLocation.replaceState(n, i, a)
       }
       forward() {
@@ -7353,7 +7353,7 @@ var yr = (() => {
       return this._locationStrategy.getState()
     }
     isCurrentPathEqualTo(n, i = '') {
-      return this.path() == this.normalize(n + Bt(i))
+      return this.path() == this.normalize(n + Ht(i))
     }
     normalize(n) {
       return t.stripTrailingSlash(jD(this._basePath, Vf(n)))
@@ -7366,11 +7366,11 @@ var yr = (() => {
     }
     go(n, i = '', o = null) {
       this._locationStrategy.pushState(o, '', n, i),
-        this._notifyUrlChangeListeners(this.prepareExternalUrl(n + Bt(i)), o)
+        this._notifyUrlChangeListeners(this.prepareExternalUrl(n + Ht(i)), o)
     }
     replaceState(n, i = '', o = null) {
       this._locationStrategy.replaceState(o, '', n, i),
-        this._notifyUrlChangeListeners(this.prepareExternalUrl(n + Bt(i)), o)
+        this._notifyUrlChangeListeners(this.prepareExternalUrl(n + Ht(i)), o)
     }
     forward() {
       this._locationStrategy.forward()
@@ -7403,7 +7403,7 @@ var yr = (() => {
       return this._subject.subscribe({ next: n, error: i, complete: o })
     }
   }
-  ;(t.normalizeQueryParams = Bt),
+  ;(t.normalizeQueryParams = Ht),
     (t.joinWithSlash = Bf),
     (t.stripTrailingSlash = Lf),
     (t.ɵfac = function (i) {
@@ -7448,7 +7448,7 @@ function yo(e) {
 var On = class {}
 var wr = class {},
   wo = class {},
-  Ht = class e {
+  zt = class e {
     constructor(t) {
       ;(this.normalizedNames = new Map()),
         (this.lazyUpdate = null),
@@ -7626,7 +7626,7 @@ function Gf(e) {
 function Do(e) {
   return `${e}`
 }
-var mt = class e {
+var vt = class e {
   constructor(t = {}) {
     if (
       ((this.updates = null),
@@ -7803,11 +7803,11 @@ var Dr = class e {
           o.context && (this.context = o.context),
           o.params && (this.params = o.params),
           (this.transferCache = o.transferCache)),
-        (this.headers ??= new Ht()),
+        (this.headers ??= new zt()),
         (this.context ??= new lu()),
         !this.params)
       )
-        (this.params = new mt()), (this.urlWithParams = r)
+        (this.params = new vt()), (this.urlWithParams = r)
       else {
         let s = this.params.toString()
         if (s.length === 0) this.urlWithParams = r
@@ -7827,7 +7827,7 @@ var Dr = class e {
             Zf(this.body) ||
             YD(this.body)
           ? this.body
-          : this.body instanceof mt
+          : this.body instanceof vt
             ? this.body.toString()
             : typeof this.body == 'object' ||
                 typeof this.body == 'boolean' ||
@@ -7844,7 +7844,7 @@ var Dr = class e {
             ? null
             : typeof this.body == 'string'
               ? 'text/plain'
-              : this.body instanceof mt
+              : this.body instanceof vt
                 ? 'application/x-www-form-urlencoded;charset=UTF-8'
                 : typeof this.body == 'object' ||
                     typeof this.body == 'number' ||
@@ -7899,7 +7899,7 @@ var Dr = class e {
   })(Fn || {}),
   Cr = class {
     constructor(t, r = Io.Ok, n = 'OK') {
-      ;(this.headers = t.headers || new Ht()),
+      ;(this.headers = t.headers || new zt()),
         (this.status = t.status !== void 0 ? t.status : r),
         (this.statusText = t.statusText || n),
         (this.url = t.url || null),
@@ -8041,12 +8041,12 @@ var fu = (() => {
       if (n instanceof Dr) s = n
       else {
         let c
-        o.headers instanceof Ht ? (c = o.headers) : (c = new Ht(o.headers))
+        o.headers instanceof zt ? (c = o.headers) : (c = new zt(o.headers))
         let l
         o.params &&
-          (o.params instanceof mt
+          (o.params instanceof vt
             ? (l = o.params)
-            : (l = new mt({ fromObject: o.params }))),
+            : (l = new vt({ fromObject: o.params }))),
           (s = new Dr(n, i, o.body !== void 0 ? o.body : null, {
             headers: c,
             context: o.context,
@@ -8108,7 +8108,7 @@ var fu = (() => {
     }
     jsonp(n, i) {
       return this.request('JSONP', n, {
-        params: new mt().append(i, 'JSONP_CALLBACK'),
+        params: new vt().append(i, 'JSONP_CALLBACK'),
         observe: 'body',
         responseType: 'json',
       })
@@ -8137,7 +8137,7 @@ function QD(e, t) {
   return t(e)
 }
 function KD(e, t, r) {
-  return (n, i) => Je(r, () => t(n, (o) => e(o, i)))
+  return (n, i) => Xe(r, () => t(n, (o) => e(o, i)))
 }
 var Kf = new C(''),
   JD = new C(''),
@@ -8149,7 +8149,7 @@ var Yf = (() => {
         (this.backend = n),
         (this.injector = i),
         (this.chain = null),
-        (this.pendingTasks = p(Tn))
+        (this.pendingTasks = p(An))
       let o = p(XD, { optional: !0 })
       this.backend = o ?? n
     }
@@ -8162,7 +8162,7 @@ var Yf = (() => {
       }
       let i = this.pendingTasks.add()
       return this.chain(n, (o) => this.backend.handle(o)).pipe(
-        It(() => this.pendingTasks.remove(i)),
+        bt(() => this.pendingTasks.remove(i)),
       )
     }
   }
@@ -8189,7 +8189,7 @@ var Qf = (() => {
       handle(n) {
         if (n.method === 'JSONP') throw new w(-2800, !1)
         let i = this.xhrFactory
-        return (i.ɵloadImpl ? H(i.ɵloadImpl()) : I(null)).pipe(
+        return (i.ɵloadImpl ? z(i.ɵloadImpl()) : I(null)).pipe(
           De(
             () =>
               new k((s) => {
@@ -8219,7 +8219,7 @@ var Qf = (() => {
                   l = () => {
                     if (c !== null) return c
                     let y = a.statusText || 'OK',
-                      v = new Ht(a.getAllResponseHeaders()),
+                      v = new zt(a.getAllResponseHeaders()),
                       ne = tw(a) || n.url
                     return (
                       (c = new du({
@@ -8397,7 +8397,7 @@ function Xf(...e) {
     { provide: bo, useClass: sw },
   ]
   for (let r of e) t.push(...r.ɵproviders)
-  return Cn(t)
+  return En(t)
 }
 var gu = class extends go {
     constructor() {
@@ -8767,12 +8767,12 @@ var eh = (() => {
       t.classList.remove(r)
     }
     setStyle(t, r, n, i) {
-      i & (Ke.DashCase | Ke.Important)
-        ? t.style.setProperty(r, n, i & Ke.Important ? 'important' : '')
+      i & (Je.DashCase | Je.Important)
+        ? t.style.setProperty(r, n, i & Je.Important ? 'important' : '')
         : (t.style[r] = n)
     }
     removeStyle(t, r, n) {
-      n & Ke.DashCase ? t.style.removeProperty(r) : (t.style[r] = '')
+      n & Je.DashCase ? t.style.removeProperty(r) : (t.style[r] = '')
     }
     setProperty(t, r, n) {
       t != null && (t[r] = n)
@@ -8996,7 +8996,7 @@ function Iw() {
   mu.makeCurrent()
 }
 function bw() {
-  return new Qe()
+  return new Ke()
 }
 function Mw() {
   return Hd(document), document
@@ -9008,7 +9008,7 @@ var _w = [
 ]
 var Sw = [
   { provide: Ki, useValue: 'root' },
-  { provide: Qe, useFactory: bw, deps: [] },
+  { provide: Ke, useFactory: bw, deps: [] },
   { provide: vu, useClass: yw, multi: !0, deps: [pe, q, ht] },
   { provide: vu, useClass: Cw, multi: !0, deps: [pe] },
   eh,
@@ -9085,10 +9085,10 @@ function xw(e, t, r) {
 }
 function Nw(e, t) {
   if (e.length !== t.length) return !1
-  for (let r = 0; r < e.length; ++r) if (!Ge(e[r], t[r])) return !1
+  for (let r = 0; r < e.length; ++r) if (!qe(e[r], t[r])) return !1
   return !0
 }
-function Ge(e, t) {
+function qe(e, t) {
   let r = e ? Mu(e) : void 0,
     n = t ? Mu(t) : void 0
   if (!r || !n || r.length != n.length) return !1
@@ -9111,8 +9111,8 @@ function ph(e, t) {
 function gh(e) {
   return e.length > 0 ? e[e.length - 1] : null
 }
-function Dt(e) {
-  return fs(e) ? e : Ut(e) ? H(Promise.resolve(e)) : I(e)
+function wt(e) {
+  return fs(e) ? e : $t(e) ? z(Promise.resolve(e)) : I(e)
 }
 var Rw = { exact: vh, subset: yh },
   mh = { exact: Ow, subset: Fw, ignored: () => !0 }
@@ -9124,11 +9124,11 @@ function ch(e, t, r) {
   )
 }
 function Ow(e, t) {
-  return Ge(e, t)
+  return qe(e, t)
 }
 function vh(e, t, r) {
   if (
-    !Gt(e.segments, t.segments) ||
+    !qt(e.segments, t.segments) ||
     !Ao(e.segments, t.segments, r) ||
     e.numberOfChildren !== t.numberOfChildren
   )
@@ -9149,16 +9149,16 @@ function yh(e, t, r) {
 function Dh(e, t, r, n) {
   if (e.segments.length > r.length) {
     let i = e.segments.slice(0, r.length)
-    return !(!Gt(i, r) || t.hasChildren() || !Ao(i, r, n))
+    return !(!qt(i, r) || t.hasChildren() || !Ao(i, r, n))
   } else if (e.segments.length === r.length) {
-    if (!Gt(e.segments, r) || !Ao(e.segments, r, n)) return !1
+    if (!qt(e.segments, r) || !Ao(e.segments, r, n)) return !1
     for (let i in t.children)
       if (!e.children[i] || !yh(e.children[i], t.children[i], n)) return !1
     return !0
   } else {
     let i = r.slice(0, e.segments.length),
       o = r.slice(e.segments.length)
-    return !Gt(e.segments, i) || !Ao(e.segments, i, n) || !e.children[T]
+    return !qt(e.segments, i) || !Ao(e.segments, i, n) || !e.children[T]
       ? !1
       : Dh(e.children[T], t, o, n)
   }
@@ -9166,7 +9166,7 @@ function Dh(e, t, r, n) {
 function Ao(e, t, r) {
   return t.every((n, i) => mh[r](e[i].parameters, n.parameters))
 }
-var vt = class {
+var yt = class {
     constructor(t = new L([], {}), r = {}, n = null) {
       ;(this.root = t), (this.queryParams = r), (this.fragment = n)
     }
@@ -9194,7 +9194,7 @@ var vt = class {
       return xo(this)
     }
   },
-  zt = class {
+  Gt = class {
     constructor(t, r) {
       ;(this.path = t), (this.parameters = r)
     }
@@ -9206,9 +9206,9 @@ var vt = class {
     }
   }
 function Pw(e, t) {
-  return Gt(e, t) && e.every((r, n) => Ge(r.parameters, t[n].parameters))
+  return qt(e, t) && e.every((r, n) => qe(r.parameters, t[n].parameters))
 }
-function Gt(e, t) {
+function qt(e, t) {
   return e.length !== t.length ? !1 : e.every((r, n) => r.path === t[n].path)
 }
 function kw(e, t) {
@@ -9235,7 +9235,7 @@ var Ku = (() => {
   Ro = class {
     parse(t) {
       let r = new Su(t)
-      return new vt(
+      return new yt(
         r.parseRootSegment(),
         r.parseQueryParams(),
         r.parseFragment(),
@@ -9380,7 +9380,7 @@ var Su = class {
   parseSegment() {
     let t = wu(this.remaining)
     if (t === '' && this.peekStartsWith(';')) throw new w(4009, !1)
-    return this.capture(t), new zt(No(t), this.parseMatrixParams())
+    return this.capture(t), new Gt(No(t), this.parseMatrixParams())
   }
   parseMatrixParams() {
     let t = {}
@@ -9468,7 +9468,7 @@ function Zw(e) {
   return e
 }
 function Un(e) {
-  return e instanceof vt
+  return e instanceof yt
 }
 function Yw(e, t, r = null, n = null) {
   let i = bh(e)
@@ -9516,7 +9516,7 @@ function Cu(e, t, r, n, i) {
   let s
   e === t ? (s = r) : (s = _h(e, t, r))
   let a = Eh(Ih(s))
-  return new vt(a, o, i)
+  return new yt(a, o, i)
 }
 function _h(e, t, r) {
   let n = {}
@@ -9685,14 +9685,14 @@ function Tu(e, t, r) {
     }
     if (i === 0 && Oo(r[0])) {
       let u = e.segments[t]
-      n.push(new zt(u.path, dh(r[0]))), i++
+      n.push(new Gt(u.path, dh(r[0]))), i++
       continue
     }
     let s = Nr(o) ? o.outlets[T] : `${o}`,
       a = i < r.length - 1 ? r[i + 1] : null
     s && a && Oo(a)
-      ? (n.push(new zt(s, dh(a))), (i += 2))
-      : (n.push(new zt(s, {})), i++)
+      ? (n.push(new Gt(s, dh(a))), (i += 2))
+      : (n.push(new Gt(s, {})), i++)
   }
   return new L(n, {})
 }
@@ -9711,7 +9711,7 @@ function dh(e) {
   return Object.entries(e).forEach(([r, n]) => (t[r] = `${n}`)), t
 }
 function fh(e, t, r) {
-  return e == r.path && Ge(t, r.parameters)
+  return e == r.path && qe(t, r.parameters)
 }
 var Ar = 'imperative',
   te = (function (e) {
@@ -9752,7 +9752,7 @@ var Ar = 'imperative',
       return `NavigationStart(id: ${this.id}, url: '${this.url}')`
     }
   },
-  qt = class extends Se {
+  Wt = class extends Se {
     constructor(t, r, n) {
       super(t, r), (this.urlAfterRedirects = n), (this.type = te.NavigationEnd)
     }
@@ -9777,7 +9777,7 @@ var Ar = 'imperative',
       e
     )
   })(Au || {}),
-  yt = class extends Se {
+  Dt = class extends Se {
     constructor(t, r, n, i) {
       super(t, r),
         (this.reason = n),
@@ -9788,7 +9788,7 @@ var Ar = 'imperative',
       return `NavigationCancel(id: ${this.id}, url: '${this.url}')`
     }
   },
-  Wt = class extends Se {
+  Zt = class extends Se {
     constructor(t, r, n, i) {
       super(t, r),
         (this.reason = n),
@@ -10028,7 +10028,7 @@ var Lo = class extends ko {
 }
 function Th(e) {
   let t = nC(e),
-    r = new ee([new zt('', {})]),
+    r = new ee([new Gt('', {})]),
     n = new ee({}),
     i = new ee({}),
     o = new ee({}),
@@ -10180,17 +10180,17 @@ function Eu(e) {
     let t = e.snapshot,
       r = e._futureSnapshot
     ;(e.snapshot = r),
-      Ge(t.queryParams, r.queryParams) ||
+      qe(t.queryParams, r.queryParams) ||
         e.queryParamsSubject.next(r.queryParams),
       t.fragment !== r.fragment && e.fragmentSubject.next(r.fragment),
-      Ge(t.params, r.params) || e.paramsSubject.next(r.params),
+      qe(t.params, r.params) || e.paramsSubject.next(r.params),
       Nw(t.url, r.url) || e.urlSubject.next(r.url),
-      Ge(t.data, r.data) || e.dataSubject.next(r.data)
+      qe(t.data, r.data) || e.dataSubject.next(r.data)
   } else
     (e.snapshot = e._futureSnapshot), e.dataSubject.next(e._futureSnapshot.data)
 }
 function Hu(e, t) {
-  let r = Ge(e.params, t.params) && Pw(e.url, t.url),
+  let r = qe(e.params, t.params) && Pw(e.url, t.url),
     n = !e.parent != !t.parent
   return r && !n && (!e.parent || Hu(e.parent, t.parent))
 }
@@ -10209,7 +10209,7 @@ var rC = (() => {
           (this.detachEvents = new ue()),
           (this.parentContexts = p($o)),
           (this.location = p(uo)),
-          (this.changeDetector = p($t)),
+          (this.changeDetector = p(Bt)),
           (this.environmentInjector = p(he)),
           (this.inputBinder = p(ec, { optional: !0 })),
           (this.supportsBindingToComponentInputs = !0)
@@ -10322,7 +10322,7 @@ var rC = (() => {
         },
         exportAs: ['outlet'],
         standalone: !0,
-        features: [In],
+        features: [bn],
       }))
     let e = t
     return e
@@ -10420,7 +10420,7 @@ var uC = (() => {
       decls: 1,
       vars: 0,
       template: function (i, o) {
-        i & 1 && xn(0, 'router-outlet')
+        i & 1 && Nn(0, 'router-outlet')
       },
       dependencies: [rC],
       encapsulation: 2,
@@ -10449,12 +10449,12 @@ function tc(e) {
     r
   )
 }
-function qe(e) {
+function We(e) {
   return e.outlet || T
 }
 function lC(e, t) {
-  let r = e.filter((n) => qe(n) === t)
-  return r.push(...e.filter((n) => qe(n) !== t)), r
+  let r = e.filter((n) => We(n) === t)
+  return r.push(...e.filter((n) => We(n) !== t)), r
 }
 function Ur(e) {
   if (!e) return null
@@ -10651,13 +10651,13 @@ function gC(e, t, r) {
   if (typeof r == 'function') return r(e, t)
   switch (r) {
     case 'pathParamsChange':
-      return !Gt(e.url, t.url)
+      return !qt(e.url, t.url)
     case 'pathParamsOrQueryParamsChange':
-      return !Gt(e.url, t.url) || !Ge(e.queryParams, t.queryParams)
+      return !qt(e.url, t.url) || !qe(e.queryParams, t.queryParams)
     case 'always':
       return !0
     case 'paramsOrQueryParamsChange':
-      return !Hu(e, t) || !Ge(e.queryParams, t.queryParams)
+      return !Hu(e, t) || !qe(e.queryParams, t.queryParams)
     case 'paramsChange':
     default:
       return !Hu(e, t)
@@ -10701,22 +10701,22 @@ function CC(e) {
   return e && $r(e.canMatch)
 }
 function Ph(e) {
-  return e instanceof Ze || e?.name === 'EmptyError'
+  return e instanceof Ye || e?.name === 'EmptyError'
 }
 var To = Symbol('INITIAL_VALUE')
 function Bn() {
   return De((e) =>
-    Di(e.map((t) => t.pipe(Ye(1), ys(To)))).pipe(
+    Di(e.map((t) => t.pipe(Qe(1), ys(To)))).pipe(
       M((t) => {
         for (let r of t)
           if (r !== !0) {
             if (r === To) return To
-            if (r === !1 || r instanceof vt) return r
+            if (r === !1 || r instanceof yt) return r
           }
         return !0
       }),
       ye((t) => t !== To),
-      Ye(1),
+      Qe(1),
     ),
   )
 }
@@ -10736,15 +10736,15 @@ function EC(e, t) {
   })
 }
 function IC(e, t, r, n) {
-  return H(e).pipe(
+  return z(e).pipe(
     Y((i) => AC(i.component, i.route, r, t, n)),
     Le((i) => i !== !0, !0),
   )
 }
 function bC(e, t, r, n) {
-  return H(t).pipe(
+  return z(t).pipe(
     ot((i) =>
-      rn(
+      on(
         _C(i.route.parent, n),
         MC(i.route, n),
         TC(e, i.path, r),
@@ -10767,8 +10767,8 @@ function SC(e, t, r) {
     wi(() => {
       let s = Ur(t) ?? r,
         a = Hn(o, s),
-        u = yC(a) ? a.canActivate(t, e) : Je(s, () => a(t, e))
-      return Dt(u).pipe(Le())
+        u = yC(a) ? a.canActivate(t, e) : Xe(s, () => a(t, e))
+      return wt(u).pipe(Le())
     }),
   )
   return I(i).pipe(Bn())
@@ -10785,8 +10785,8 @@ function TC(e, t, r) {
           let a = s.guards.map((u) => {
             let c = Ur(s.node) ?? r,
               l = Hn(u, c),
-              d = DC(l) ? l.canActivateChild(n, e) : Je(c, () => l(n, e))
-            return Dt(d).pipe(Le())
+              d = DC(l) ? l.canActivateChild(n, e) : Xe(c, () => l(n, e))
+            return wt(d).pipe(Le())
           })
           return I(a).pipe(Bn())
         }),
@@ -10799,8 +10799,8 @@ function AC(e, t, r, n, i) {
   let s = o.map((a) => {
     let u = Ur(t) ?? i,
       c = Hn(a, u),
-      l = wC(c) ? c.canDeactivate(e, t, r, n) : Je(u, () => c(e, t, r, n))
-    return Dt(l).pipe(Le())
+      l = wC(c) ? c.canDeactivate(e, t, r, n) : Xe(u, () => c(e, t, r, n))
+    return wt(l).pipe(Le())
   })
   return I(s).pipe(Bn())
 }
@@ -10809,8 +10809,8 @@ function xC(e, t, r, n) {
   if (i === void 0 || i.length === 0) return I(!0)
   let o = i.map((s) => {
     let a = Hn(s, e),
-      u = vC(a) ? a.canLoad(t, r) : Je(e, () => a(t, r))
-    return Dt(u)
+      u = vC(a) ? a.canLoad(t, r) : Xe(e, () => a(t, r))
+    return wt(u)
   })
   return I(o).pipe(Bn(), kh(n))
 }
@@ -10827,8 +10827,8 @@ function NC(e, t, r, n) {
   if (!i || i.length === 0) return I(!0)
   let o = i.map((s) => {
     let a = Hn(s, e),
-      u = CC(a) ? a.canMatch(t, r) : Je(e, () => a(t, r))
-    return Dt(u)
+      u = CC(a) ? a.canMatch(t, r) : Xe(e, () => a(t, r))
+    return wt(u)
   })
   return I(o).pipe(Bn(), kh(n))
 }
@@ -10843,13 +10843,13 @@ var Vr = class {
     }
   }
 function Pn(e) {
-  return nn(new Vr(e))
+  return rn(new Vr(e))
 }
 function RC(e) {
-  return nn(new w(4e3, !1))
+  return rn(new w(4e3, !1))
 }
 function OC(e) {
-  return nn(Oh(!1, Ce.GuardRejected))
+  return rn(Oh(!1, Ce.GuardRejected))
 }
 var qu = class {
     constructor(t, r) {
@@ -10876,7 +10876,7 @@ var qu = class {
     }
     applyRedirectCreateUrlTree(t, r, n, i) {
       let o = this.createSegmentGroup(t, r.root, n, i)
-      return new vt(
+      return new yt(
         o,
         this.createQueryParams(r.queryParams, this.urlTree.queryParams),
         r.fragment,
@@ -10994,9 +10994,9 @@ function hh(e, t, r, n) {
 function kC(e, t, r, n) {
   let i = {}
   for (let o of r)
-    if (Bo(e, t, o) && !n[qe(o)]) {
+    if (Bo(e, t, o) && !n[We(o)]) {
       let s = new L([], {})
-      i[qe(o)] = s
+      i[We(o)] = s
     }
   return g(g({}, n), i)
 }
@@ -11004,14 +11004,14 @@ function LC(e, t) {
   let r = {}
   r[T] = t
   for (let n of e)
-    if (n.path === '' && qe(n) !== T) {
+    if (n.path === '' && We(n) !== T) {
       let i = new L([], {})
-      r[qe(n)] = i
+      r[We(n)] = i
     }
   return r
 }
 function VC(e, t, r) {
-  return r.some((n) => Bo(e, t, n) && qe(n) !== T)
+  return r.some((n) => Bo(e, t, n) && We(n) !== T)
 }
 function jC(e, t, r) {
   return r.some((n) => Bo(e, t, n))
@@ -11022,7 +11022,7 @@ function Bo(e, t, r) {
     : r.path === ''
 }
 function UC(e, t, r, n) {
-  return qe(e) !== n && (n === T || !Bo(t, r, e)) ? !1 : nc(t, e, r).matched
+  return We(e) !== n && (n === T || !Bo(t, r, e)) ? !1 : nc(t, e, r).matched
 }
 function $C(e, t, r) {
   return t.length === 0 && !e.children[r]
@@ -11102,7 +11102,7 @@ var HC = 31,
       let i = []
       for (let o of Object.keys(n.children))
         o === 'primary' ? i.unshift(o) : i.push(o)
-      return H(i).pipe(
+      return z(i).pipe(
         ot((o) => {
           let s = n.children[o],
             a = lC(r, o)
@@ -11119,7 +11119,7 @@ var HC = 31,
       )
     }
     processSegment(t, r, n, i, o, s) {
-      return H(r).pipe(
+      return z(r).pipe(
         ot((a) =>
           this.processSegmentAgainstRoute(
             a._injector ?? t,
@@ -11190,7 +11190,7 @@ var HC = 31,
                         Object.freeze(g({}, this.urlTree.queryParams)),
                         this.urlTree.fragment,
                         qC(n),
-                        qe(n),
+                        We(n),
                         n.component ?? n._loadedComponent ?? null,
                         n,
                         WC(n),
@@ -11202,7 +11202,7 @@ var HC = 31,
                       )
                     if (u.length === 0 && b.length === 0)
                       return I(new we(h, []))
-                    let y = qe(n) === o
+                    let y = We(n) === o
                     return this.processSegment(c, u, m, b, y ? T : o, !0).pipe(
                       M((v) => new we(h, v instanceof we ? [v] : [])),
                     )
@@ -11290,14 +11290,14 @@ function YC(e, t) {
       s = new Set()
     for (let u of o) if (!s.has(u)) for (let c of Vh(u)) s.add(c)
     let a = 0
-    return H(s).pipe(
+    return z(s).pipe(
       ot((u) =>
         o.has(u)
           ? QC(u, n, e, t)
           : ((u.data = Ju(u, u.parent, e).resolve), I(void 0)),
       ),
       G(() => a++),
-      on(1),
+      sn(1),
       Y((u) => (a === s.size ? I(r) : ve)),
     )
   })
@@ -11324,7 +11324,7 @@ function KC(e, t, r, n) {
   let i = Mu(e)
   if (i.length === 0) return I({})
   let o = {}
-  return H(i).pipe(
+  return z(i).pipe(
     Y((s) =>
       JC(e[s], t, r, n).pipe(
         Le(),
@@ -11333,21 +11333,21 @@ function KC(e, t, r, n) {
         }),
       ),
     ),
-    on(1),
+    sn(1),
     gs(o),
-    Ae((s) => (Ph(s) ? ve : nn(s))),
+    Ae((s) => (Ph(s) ? ve : rn(s))),
   )
 }
 function JC(e, t, r, n) {
   let i = Ur(t) ?? n,
     o = Hn(e, i),
-    s = o.resolve ? o.resolve(t, r) : Je(i, () => o(t, r))
-  return Dt(s)
+    s = o.resolve ? o.resolve(t, r) : Xe(i, () => o(t, r))
+  return wt(s)
 }
 function Iu(e) {
   return De((t) => {
     let r = e(t)
-    return r ? H(r).pipe(M(() => t)) : I(t)
+    return r ? z(r).pipe(M(() => t)) : I(t)
   })
 }
 var jh = (() => {
@@ -11401,17 +11401,17 @@ var jh = (() => {
         if (this.componentLoaders.get(n)) return this.componentLoaders.get(n)
         if (n._loadedComponent) return I(n._loadedComponent)
         this.onLoadStartListener && this.onLoadStartListener(n)
-        let i = Dt(n.loadComponent()).pipe(
+        let i = wt(n.loadComponent()).pipe(
             M(Uh),
             G((s) => {
               this.onLoadEndListener && this.onLoadEndListener(n),
                 (n._loadedComponent = s)
             }),
-            It(() => {
+            bt(() => {
               this.componentLoaders.delete(n)
             }),
           ),
-          o = new tn(i, () => new se()).pipe(en())
+          o = new nn(i, () => new se()).pipe(tn())
         return this.componentLoaders.set(n, o), o
       }
       loadChildren(n, i) {
@@ -11420,11 +11420,11 @@ var jh = (() => {
           return I({ routes: i._loadedRoutes, injector: i._loadedInjector })
         this.onLoadStartListener && this.onLoadStartListener(i)
         let s = tE(i, this.compiler, n, this.onLoadEndListener).pipe(
-            It(() => {
+            bt(() => {
               this.childrenLoaders.delete(i)
             }),
           ),
-          a = new tn(s, () => new se()).pipe(en())
+          a = new nn(s, () => new se()).pipe(tn())
         return this.childrenLoaders.set(i, a), a
       }
     }
@@ -11436,10 +11436,10 @@ var jh = (() => {
     return e
   })()
 function tE(e, t, r, n) {
-  return Dt(e.loadChildren()).pipe(
+  return wt(e.loadChildren()).pipe(
     M(Uh),
     Y((i) =>
-      i instanceof lr || Array.isArray(i) ? I(i) : H(t.compileModuleAsync(i)),
+      i instanceof lr || Array.isArray(i) ? I(i) : z(t.compileModuleAsync(i)),
     ),
     M((i) => {
       n && n(e)
@@ -11594,7 +11594,7 @@ var oE = (() => {
                   let f = ''
                   return (
                     this.events.next(
-                      new Wt(
+                      new Zt(
                         c.id,
                         this.urlSerializer.serialize(c.rawUrl),
                         f,
@@ -11678,7 +11678,7 @@ var oE = (() => {
                   let f = ''
                   return (
                     this.events.next(
-                      new Wt(
+                      new Zt(
                         c.id,
                         this.urlSerializer.serialize(c.extractedUrl),
                         f,
@@ -11790,7 +11790,7 @@ var oE = (() => {
                   for (let h of d.children) f.push(...l(h))
                   return f
                 }
-                return Di(l(c.targetSnapshot.root)).pipe(st(null), Ye(1))
+                return Di(l(c.targetSnapshot.root)).pipe(st(null), Qe(1))
               }),
               Iu(() => this.afterPreactivation()),
               De(() => {
@@ -11800,7 +11800,7 @@ var oE = (() => {
                     c.root,
                     l.root,
                   )
-                return d ? H(d).pipe(M(() => s)) : I(s)
+                return d ? z(d).pipe(M(() => s)) : I(s)
               }),
               M((c) => {
                 let l = iC(
@@ -11824,13 +11824,13 @@ var oE = (() => {
                 (c) => this.events.next(c),
                 this.inputBindingEnabled,
               ),
-              Ye(1),
+              Qe(1),
               G({
                 next: (c) => {
                   ;(a = !0),
                     (this.lastSuccessfulNavigation = this.currentNavigation),
                     this.events.next(
-                      new qt(
+                      new Wt(
                         c.id,
                         this.urlSerializer.serialize(c.extractedUrl),
                         this.urlSerializer.serialize(c.urlAfterRedirects),
@@ -11852,7 +11852,7 @@ var oE = (() => {
                   }),
                 ),
               ),
-              It(() => {
+              bt(() => {
                 !a &&
                   !u &&
                   this.cancelNavigationTransition(
@@ -11867,7 +11867,7 @@ var oE = (() => {
               Ae((c) => {
                 if (((u = !0), Fh(c)))
                   this.events.next(
-                    new yt(
+                    new Dt(
                       s.id,
                       this.urlSerializer.serialize(s.extractedUrl),
                       c.message,
@@ -11900,7 +11900,7 @@ var oE = (() => {
       )
     }
     cancelNavigationTransition(n, i, o) {
-      let s = new yt(n.id, this.urlSerializer.serialize(n.extractedUrl), i, o)
+      let s = new Dt(n.id, this.urlSerializer.serialize(n.extractedUrl), i, o)
       this.events.next(s), n.resolve(!1)
     }
     isUpdatingInternalState() {
@@ -11957,7 +11957,7 @@ var aE = (() => {
     ;(t.ɵfac = (() => {
       let n
       return function (o) {
-        return (n || (n = bn(t)))(o || t)
+        return (n || (n = Mn(t)))(o || t)
       }
     })()),
       (t.ɵprov = D({ token: t, factory: t.ɵfac, providedIn: 'root' }))
@@ -11985,7 +11985,7 @@ var aE = (() => {
           (this.urlHandlingStrategy = p(oc)),
           (this.urlUpdateStrategy =
             this.options.urlUpdateStrategy || 'deferred'),
-          (this.currentUrlTree = new vt()),
+          (this.currentUrlTree = new yt()),
           (this.rawUrlTree = this.currentUrlTree),
           (this.currentPageId = 0),
           (this.lastSuccessfulId = -1),
@@ -12023,7 +12023,7 @@ var aE = (() => {
       }
       handleRouterEvent(n, i) {
         if (n instanceof Rr) this.stateMemento = this.createStateMemento()
-        else if (n instanceof Wt) this.rawUrlTree = i.initialUrl
+        else if (n instanceof Zt) this.rawUrlTree = i.initialUrl
         else if (n instanceof Po) {
           if (
             this.urlUpdateStrategy === 'eager' &&
@@ -12043,13 +12043,13 @@ var aE = (() => {
               this.urlUpdateStrategy === 'deferred' &&
                 (i.extras.skipLocationChange ||
                   this.setBrowserUrl(this.rawUrlTree, i)))
-            : n instanceof yt &&
+            : n instanceof Dt &&
                 (n.code === Ce.GuardRejected ||
                   n.code === Ce.NoDataFromResolver)
               ? this.restoreHistory(i)
               : n instanceof Or
                 ? this.restoreHistory(i, !0)
-                : n instanceof qt &&
+                : n instanceof Wt &&
                   ((this.lastSuccessfulId = n.id),
                   (this.currentPageId = this.browserPageId))
       }
@@ -12104,7 +12104,7 @@ var aE = (() => {
     ;(t.ɵfac = (() => {
       let n
       return function (o) {
-        return (n || (n = bn(t)))(o || t)
+        return (n || (n = Mn(t)))(o || t)
       }
     })()),
       (t.ɵprov = D({ token: t, factory: t.ɵfac, providedIn: 'root' }))
@@ -12124,16 +12124,16 @@ function lE(e, t) {
     .pipe(
       ye(
         (r) =>
-          r instanceof qt ||
-          r instanceof yt ||
+          r instanceof Wt ||
+          r instanceof Dt ||
           r instanceof Or ||
-          r instanceof Wt,
+          r instanceof Zt,
       ),
       M((r) =>
-        r instanceof qt || r instanceof Wt
+        r instanceof Wt || r instanceof Zt
           ? Sr.COMPLETE
           : (
-                r instanceof yt
+                r instanceof Dt
                   ? r.code === Ce.Redirect ||
                     r.code === Ce.SupersededByNewNavigation
                   : !1
@@ -12142,7 +12142,7 @@ function lE(e, t) {
             : Sr.FAILED,
       ),
       ye((r) => r !== Sr.REDIRECTING),
-      Ye(1),
+      Qe(1),
     )
     .subscribe(() => {
       t()
@@ -12183,7 +12183,7 @@ var fE = {
           (this.console = p(fo)),
           (this.stateManager = p($h)),
           (this.options = p(rc, { optional: !0 }) || {}),
-          (this.pendingTasks = p(Tn)),
+          (this.pendingTasks = p(An)),
           (this.urlUpdateStrategy =
             this.options.urlUpdateStrategy || 'deferred'),
           (this.navigationTransitions = p(oE)),
@@ -12218,12 +12218,12 @@ var fE = {
             if (o !== null && s !== null) {
               if (
                 (this.stateManager.handleRouterEvent(i, s),
-                i instanceof yt &&
+                i instanceof Dt &&
                   i.code !== Ce.Redirect &&
                   i.code !== Ce.SupersededByNewNavigation)
               )
                 this.navigated = !0
-              else if (i instanceof qt) this.navigated = !0
+              else if (i instanceof Wt) this.navigated = !0
               else if (i instanceof Pr) {
                 let a = this.urlHandlingStrategy.merge(i.url, o.currentRawUrl),
                   u = {
@@ -12414,7 +12414,7 @@ function gE(e) {
 }
 var mE = new C('')
 function Hh(e, ...t) {
-  return Cn([
+  return En([
     { provide: ic, multi: !0, useValue: e },
     [],
     { provide: $n, useFactory: vE, deps: [Bh] },
@@ -12426,9 +12426,9 @@ function vE(e) {
   return e.routerState.root
 }
 function yE() {
-  let e = p(Mn)
+  let e = p(_n)
   return (t) => {
-    let r = e.get(Nn)
+    let r = e.get(Rn)
     if (t !== r.components[0]) return
     let n = e.get(Bh),
       i = e.get(DE)
@@ -12466,7 +12466,7 @@ var Xh = (() => {
       }
     }
     ;(t.ɵfac = function (i) {
-      return new (i || t)(J(Sn), J(kt))
+      return new (i || t)(J(Tn), J(Lt))
     }),
       (t.ɵdir = He({ type: t }))
     let e = t
@@ -12477,15 +12477,15 @@ var Xh = (() => {
     ;(t.ɵfac = (() => {
       let n
       return function (o) {
-        return (n || (n = bn(t)))(o || t)
+        return (n || (n = Mn(t)))(o || t)
       }
     })()),
-      (t.ɵdir = He({ type: t, features: [Vt] }))
+      (t.ɵdir = He({ type: t, features: [jt] }))
     let e = t
     return e
   })(),
   lc = new C('')
-var EE = { provide: lc, useExisting: wn(() => Gn), multi: !0 }
+var EE = { provide: lc, useExisting: Cn(() => Gn), multi: !0 }
 function IE() {
   let e = nt() ? nt().getUserAgent() : ''
   return /android (\d+)/.test(e.toLowerCase())
@@ -12516,7 +12516,7 @@ var bE = new C(''),
       }
     }
     ;(t.ɵfac = function (i) {
-      return new (i || t)(J(Sn), J(kt), J(bE, 8))
+      return new (i || t)(J(Tn), J(Lt), J(bE, 8))
     }),
       (t.ɵdir = He({
         type: t,
@@ -12541,7 +12541,7 @@ var bE = new C(''),
               return o._compositionEnd(a.target.value)
             })
         },
-        features: [pt([EE]), Vt],
+        features: [pt([EE]), jt],
       }))
     let e = t
     return e
@@ -12552,7 +12552,7 @@ function tp(e) {
   return e != null
 }
 function np(e) {
-  return Ut(e) ? H(e) : e
+  return $t(e) ? z(e) : e
 }
 function rp(e) {
   let t = {}
@@ -12788,7 +12788,7 @@ var Go = class {
               o.isInvalid,
             )('ng-pending', o.isPending)
         },
-        features: [Vt],
+        features: [jt],
       }))
     let e = t
     return e
@@ -13271,7 +13271,7 @@ var WE = class extends cc {
       : (this.value = this._pendingValue = t)
   }
 }
-var ZE = { provide: zr, useExisting: wn(() => Gr) },
+var ZE = { provide: zr, useExisting: Cn(() => Gr) },
   Jh = Promise.resolve(),
   Gr = (() => {
     let t = class t extends zr {
@@ -13368,7 +13368,7 @@ var ZE = { provide: zr, useExisting: wn(() => Gr) },
         J(ME, 10),
         J(_E, 10),
         J(lc, 10),
-        J($t, 8),
+        J(Bt, 8),
         J(up, 8),
       )
     }),
@@ -13385,12 +13385,12 @@ var ZE = { provide: zr, useExisting: wn(() => Gr) },
         },
         outputs: { update: 'ngModelChange' },
         exportAs: ['ngModel'],
-        features: [pt([ZE]), Vt, In],
+        features: [pt([ZE]), jt, bn],
       }))
     let e = t
     return e
   })()
-var YE = { provide: lc, useExisting: wn(() => qr), multi: !0 },
+var YE = { provide: lc, useExisting: Cn(() => qr), multi: !0 },
   qr = (() => {
     let t = class t extends ep {
       writeValue(n) {
@@ -13406,7 +13406,7 @@ var YE = { provide: lc, useExisting: wn(() => qr), multi: !0 },
     ;(t.ɵfac = (() => {
       let n
       return function (o) {
-        return (n || (n = bn(t)))(o || t)
+        return (n || (n = Mn(t)))(o || t)
       }
     })()),
       (t.ɵdir = He({
@@ -13424,7 +13424,7 @@ var YE = { provide: lc, useExisting: wn(() => qr), multi: !0 },
               return o.onTouched()
             })
         },
-        features: [pt([YE]), Vt],
+        features: [pt([YE]), jt],
       }))
     let e = t
     return e
@@ -13434,8 +13434,8 @@ var QE = (() => {
   ;(t.ɵfac = function (i) {
     return new (i || t)()
   }),
-    (t.ɵmod = Ft({ type: t })),
-    (t.ɵinj = Ot({}))
+    (t.ɵmod = Pt({ type: t })),
+    (t.ɵinj = Ft({}))
   let e = t
   return e
 })()
@@ -13451,8 +13451,8 @@ var Zo = (() => {
   ;(t.ɵfac = function (i) {
     return new (i || t)()
   }),
-    (t.ɵmod = Ft({ type: t })),
-    (t.ɵinj = Ot({ imports: [QE] }))
+    (t.ɵmod = Pt({ type: t })),
+    (t.ɵinj = Ft({ imports: [QE] }))
   let e = t
   return e
 })()
@@ -13460,7 +13460,7 @@ var fc = (() => {
   let t = class t {
     constructor() {
       ;(this._state = co({ count: 0 })),
-        (this.count = Rn(() => this._state().count))
+        (this.count = mt(() => this._state().count))
     }
     increment(n = 1) {
       this._state.update((i) => R(g({}, i), { count: i.count + n }))
@@ -13516,53 +13516,53 @@ var dp = (() => {
           oe('click', function () {
             return o.decrement()
           }),
-          z(1, 'Decrement -1'),
-          j(),
+          H(1, 'Decrement -1'),
+          V(),
           U(2, 'button', 0),
           oe('click', function () {
             return o.increment()
           }),
-          z(3, 'Increment +1'),
-          j(),
+          H(3, 'Increment +1'),
+          V(),
           U(4, 'input', 1),
           vr('ngModelChange', function (a) {
             return lo(o.input, a) || (o.input = a), a
           }),
-          j(),
+          V(),
           U(5, 'button', 0),
           oe('click', function () {
             return o.decrementBy()
           }),
-          z(6),
-          j(),
+          H(6),
+          V(),
           U(7, 'button', 0),
           oe('click', function () {
             return o.incrementBy()
           }),
-          z(8),
-          j(),
+          H(8),
+          V(),
           U(9, 'blockquote'),
-          z(10),
-          j()),
+          H(10),
+          V()),
           i & 2 &&
             (ie(4),
             mr('ngModel', o.input),
             ie(2),
-            tt(
+            ze(
               ' Decrement by ',
               o.input,
               `
 `,
             ),
             ie(2),
-            tt(
+            ze(
               ' Increment by ',
               o.input,
               `
 `,
             ),
             ie(2),
-            tt('Counter: ', o.count(), ''))
+            ze('Counter: ', o.count(), ''))
       },
       dependencies: [Zo, Gn, qr, qo, Gr],
       encapsulation: 2,
@@ -13576,9 +13576,9 @@ var hc = (() => {
       ;(this.http = p(fu)),
         (this.baseUrl = 'https://jsonplaceholder.typicode.com/posts'),
         (this._state = co({ data: [], loading: !1, error: null })),
-        (this.posts = Rn(() => this._state().data)),
-        (this.loading = Rn(() => this._state().loading)),
-        (this.error = Rn(() => this._state().error))
+        (this.posts = mt(() => this._state().data)),
+        (this.loading = mt(() => this._state().loading)),
+        (this.error = mt(() => this._state().error))
     }
     getAll() {
       return this.requestWrapper(this.http.get(this.baseUrl))
@@ -13641,38 +13641,36 @@ var hc = (() => {
 })()
 var KE = (e, t) => t.id
 function JE(e, t) {
-  e & 1 && (U(0, 'blockquote'), z(1, 'Loading...'), j())
+  e & 1 && (U(0, 'blockquote'), H(1, 'Loading...'), V())
 }
 function XE(e, t) {
   if (
-    (e & 1 && (U(0, 'blockquote')(1, 'strong'), z(2, 'Error:'), j(), z(3), j()),
+    (e & 1 && (U(0, 'blockquote')(1, 'strong'), H(2, 'Error:'), V(), H(3), V()),
     e & 2)
   ) {
     let r = iu()
-    ie(3), tt(' ', r.error(), '')
+    ie(3), ze(' ', r.error(), '')
   }
 }
 function eI(e, t) {
   if (
-    (e & 1 && (U(0, 'blockquote')(1, 'strong'), z(2), j(), z(3), j()), e & 2)
+    (e & 1 && (U(0, 'blockquote')(1, 'strong'), H(2), V(), H(3), V()), e & 2)
   ) {
     let r = t.$implicit
-    ie(2), tt('', r.id, ':'), ie(), tt(' ', r.title, ' ')
+    ie(2), ze('', r.id, ':'), ie(), ze(' ', r.title, ' ')
   }
 }
 function tI(e, t) {
-  e & 1 && (U(0, 'blockquote'), z(1, 'No posts found!'), j())
+  e & 1 && (U(0, 'blockquote'), H(1, 'No posts found!'), V())
 }
 function nI(e, t) {
   if (
     (e & 1 &&
-      (U(0, 'div', 2),
-      Sf(1, eI, 4, 2, 'blockquote', null, KE, !1, tI, 2, 0, 'blockquote'),
-      j()),
+      Sf(0, eI, 4, 2, 'blockquote', null, KE, !1, tI, 2, 0, 'blockquote'),
     e & 2)
   ) {
     let r = iu()
-    ie(), Tf(r.posts())
+    Tf(r.posts())
   }
 }
 var fp = (() => {
@@ -13682,7 +13680,8 @@ var fp = (() => {
         (this.input = 0),
         (this.posts = this.postsService.posts),
         (this.loading = this.postsService.loading),
-        (this.error = this.postsService.error)
+        (this.error = this.postsService.error),
+        (this.totalPosts = mt(() => this.posts().length))
     }
     getAllPosts() {
       this.postsService.getAll().subscribe()
@@ -13708,8 +13707,8 @@ var fp = (() => {
       selectors: [['app-posts']],
       standalone: !0,
       features: [pt([hc]), gt],
-      decls: 14,
-      vars: 7,
+      decls: 19,
+      vars: 8,
       consts: [
         [3, 'click', 'disabled'],
         ['type', 'number', 3, 'ngModelChange', 'ngModel'],
@@ -13721,52 +13720,61 @@ var fp = (() => {
           oe('click', function () {
             return o.getAllPosts()
           }),
-          z(1, 'get all posts'),
-          j(),
+          H(1, 'get all posts'),
+          V(),
           U(2, 'button', 0),
           oe('click', function () {
             return o.createPost()
           }),
-          z(3, 'create new post'),
-          j(),
+          H(3, 'create new post'),
+          V(),
           U(4, 'input', 1),
           vr('ngModelChange', function (a) {
             return lo(o.input, a) || (o.input = a), a
           }),
-          j(),
+          V(),
           U(5, 'button', 0),
           oe('click', function () {
             return o.getPost()
           }),
-          z(6, 'get post by id'),
-          j(),
+          H(6, 'get post by id'),
+          V(),
           U(7, 'button', 0),
           oe('click', function () {
             return o.updatePost()
           }),
-          z(8, 'update post by id'),
-          j(),
+          H(8, 'update post by id'),
+          V(),
           U(9, 'button', 0),
           oe('click', function () {
             return o.deletePost()
           }),
-          z(10, 'delete post by id'),
-          j(),
-          dr(11, JE, 2, 0, 'blockquote')(12, XE, 4, 1)(13, nI, 4, 1)),
+          H(10, 'delete post by id'),
+          V(),
+          U(11, 'p')(12, 'strong'),
+          H(13, 'Total posts in response:'),
+          V(),
+          H(14),
+          V(),
+          U(15, 'div', 2),
+          dr(16, JE, 2, 0, 'blockquote')(17, XE, 4, 1)(18, nI, 3, 1),
+          V()),
           i & 2 &&
-            (jt('disabled', o.loading()),
+            (Ut('disabled', o.loading()),
             ie(2),
-            jt('disabled', o.loading()),
+            Ut('disabled', o.loading()),
             ie(2),
             mr('ngModel', o.input),
             ie(),
-            jt('disabled', o.loading()),
+            Ut('disabled', o.loading()),
             ie(2),
-            jt('disabled', o.loading()),
+            Ut('disabled', o.loading()),
             ie(2),
-            jt('disabled', o.loading()),
+            Ut('disabled', o.loading()),
+            ie(5),
+            ze(' ', o.totalPosts(), ''),
             ie(2),
-            _f(11, o.loading() ? 11 : o.error() ? 12 : 13))
+            _f(16, o.loading() ? 16 : o.error() ? 17 : 18))
       },
       dependencies: [Zo, Gn, qr, qo, Gr],
       encapsulation: 2,
@@ -13789,16 +13797,16 @@ var hp = (() => {
       template: function (i, o) {
         i & 1 &&
           (U(0, 'h1'),
-          z(1, 'Signals Store Services'),
-          j(),
+          H(1, 'Signals Store Services'),
+          V(),
           U(2, 'h2'),
-          z(3, 'Simple Store'),
-          j(),
-          xn(4, 'hr')(5, 'app-counter'),
+          H(3, 'Simple Store'),
+          V(),
+          Nn(4, 'hr')(5, 'app-counter'),
           U(6, 'h2'),
-          z(7, 'Fetching Store'),
-          j(),
-          xn(8, 'hr')(9, 'app-posts'))
+          H(7, 'Fetching Store'),
+          V(),
+          Nn(8, 'hr')(9, 'app-posts'))
       },
       dependencies: [dp, fp],
       encapsulation: 2,
