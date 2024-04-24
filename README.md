@@ -21,3 +21,13 @@ To run in development mode, use the following command:
 ```bash
 npm start
 ```
+
+To build the project, use the following command:
+
+```bash
+npm run build
+```
+
+The output will be available in the `docs` folder for deployment in GitHub Pages.
+
+<https://jpin730.github.io/angular-signals-store-services>
