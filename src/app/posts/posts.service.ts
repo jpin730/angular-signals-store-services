@@ -43,6 +43,21 @@ export class PostsService {
       )
   }
 
+  getPost(id: number): Observable<Post> {
+    this.setLoading(true)
+    return this.http
+      .get<Post>(`https://jsonplaceholder.typicode.com/posts/${id}`)
+      .pipe(
+        tap((data) => {
+          this.setData([data])
+        }),
+        catchError((error: HttpErrorResponse) => {
+          this.setError(error)
+          throw error
+        }),
+      )
+  }
+
   private setData(data: Post[]) {
     this._state.update((state) => ({
       ...state,

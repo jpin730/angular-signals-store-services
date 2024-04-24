@@ -17,4 +17,8 @@ export class PostsComponent {
   getAllPosts() {
     this.postsService.getAll().subscribe()
   }
+
+  getPost(id: number) {
+    this.postsService.getPost(id).subscribe()
+  }
 }

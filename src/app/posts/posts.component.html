@@ -1,5 +1,10 @@
 <h3>Posts</h3>
-<button (click)="getAllPosts()" [disabled]="loading()">fetch posts</button>
+<button (click)="getAllPosts()" [disabled]="loading()">get all posts</button>
+<input type="number" #input value="0" />
+<button (click)="getPost(input.valueAsNumber)">
+  get post by id
+  {{ input.valueAsNumber }}
+</button>
 
 @if (loading()) {
   <blockquote>Loading...</blockquote>
