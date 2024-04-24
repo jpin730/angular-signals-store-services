@@ -14,7 +14,7 @@ export class PostsComponent {
 
   input = 0
 
-  posts = this.postsService.posts
+  posts = this.postsService.data
   loading = this.postsService.loading
   error = this.postsService.error
 
