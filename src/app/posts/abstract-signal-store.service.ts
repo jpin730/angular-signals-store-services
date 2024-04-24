@@ -63,7 +63,7 @@ export abstract class AbstractSignalStoreService<T> {
       ...state,
       data: [],
       loading: false,
-      error: error.message,
+      error: error.statusText,
     }))
   }
 }

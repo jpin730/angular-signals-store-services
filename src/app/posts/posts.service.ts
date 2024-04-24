@@ -1,7 +1,8 @@
-import { HttpClient } from '@angular/common/http'
+import { HttpClient, HttpErrorResponse } from '@angular/common/http'
 import { Injectable, inject } from '@angular/core'
-import { Observable, map } from 'rxjs'
+import { Observable, catchError, map } from 'rxjs'
 import { AbstractSignalStoreService } from './abstract-signal-store.service'
+import { cloneErrorResponse } from './clone-error-response.util'
 
 export interface Post {
   id: number
@@ -18,7 +19,16 @@ export class PostsService extends AbstractSignalStoreService<Post> {
   }
 
   getPost(id: number): Observable<Post[]> {
-    return this.requestWrapper(this.http.get<Post>(`${this.baseUrl}/${id}`))
+    return this.requestWrapper(
+      this.http.get<Post>(`${this.baseUrl}/${id}`).pipe(
+        catchError((error: HttpErrorResponse) => {
+          if (error.status === 404) {
+            throw cloneErrorResponse(error, 'Post not found')
+          }
+          throw error
+        }),
+      ),
+    )
   }
 
   createPost(title: string): Observable<Post[]> {
@@ -31,9 +41,18 @@ export class PostsService extends AbstractSignalStoreService<Post> {
 
   updatePost(id: number, title: string): Observable<Post[]> {
     return this.requestWrapper(
-      this.http.put<Post>(`${this.baseUrl}/${id}`, {
-        title,
-      }),
+      this.http
+        .put<Post>(`${this.baseUrl}/${id}`, {
+          title,
+        })
+        .pipe(
+          catchError((error: HttpErrorResponse) => {
+            if (error.status === 500) {
+              throw cloneErrorResponse(error, 'Post not found')
+            }
+            throw error
+          }),
+        ),
     )
   }
 
