@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core'
+import { Component, computed, inject } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 import { PostsService } from './posts.service'
 
@@ -17,6 +17,8 @@ export class PostsComponent {
   posts = this.postsService.posts
   loading = this.postsService.loading
   error = this.postsService.error
+
+  totalPosts = computed(() => this.posts().length)
 
   getAllPosts() {
     this.postsService.getAll().subscribe()

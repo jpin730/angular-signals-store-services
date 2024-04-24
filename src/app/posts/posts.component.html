@@ -5,12 +5,14 @@
 <button (click)="updatePost()" [disabled]="loading()">update post by id</button>
 <button (click)="deletePost()" [disabled]="loading()">delete post by id</button>
 
-@if (loading()) {
-  <blockquote>Loading...</blockquote>
-} @else if (error()) {
-  <blockquote><strong>Error:</strong> {{ error() }}</blockquote>
-} @else {
-  <div style="max-height: 200px; overflow-y: auto">
+<p><strong>Total posts in response:</strong> {{ totalPosts() }}</p>
+
+<div style="max-height: 200px; overflow-y: auto">
+  @if (loading()) {
+    <blockquote>Loading...</blockquote>
+  } @else if (error()) {
+    <blockquote><strong>Error:</strong> {{ error() }}</blockquote>
+  } @else {
     @for (post of posts(); track post.id) {
       <blockquote>
         <strong>{{ post.id }}:</strong> {{ post.title }}
@@ -18,5 +20,5 @@
     } @empty {
       <blockquote>No posts found!</blockquote>
     }
-  </div>
-}
+  }
+</div>
