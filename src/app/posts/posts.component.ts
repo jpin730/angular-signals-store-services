@@ -29,4 +29,8 @@ export class PostsComponent {
   updatePost(id: number) {
     this.postsService.updatePost(id, 'Updated post').subscribe()
   }
+
+  deletePost(id: number) {
+    this.postsService.deletePost(id).subscribe()
+  }
 }

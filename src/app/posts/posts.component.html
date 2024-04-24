@@ -9,6 +9,9 @@
 <button (click)="updatePost(input.valueAsNumber)" [disabled]="loading()">
   update post by id
 </button>
+<button (click)="deletePost(input.valueAsNumber)" [disabled]="loading()">
+  delete post by id
+</button>
 
 @if (loading()) {
   <blockquote>Loading...</blockquote>

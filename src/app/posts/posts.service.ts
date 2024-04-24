@@ -92,6 +92,21 @@ export class PostsService {
       )
   }
 
+  deletePost(id: number): Observable<unknown> {
+    this.setLoading(true)
+    return this.http
+      .delete(`https://jsonplaceholder.typicode.com/posts/${id}`)
+      .pipe(
+        tap(() => {
+          this.setData([{ id, title: 'Post deleted' }])
+        }),
+        catchError((error: HttpErrorResponse) => {
+          this.setError(error)
+          throw error
+        }),
+      )
+  }
+
   private setData(data: Post[]) {
     this._state.update((state) => ({
       ...state,
