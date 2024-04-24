@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "test": {
+    "angular-signals-store-services": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -40,7 +40,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/test",
+            "outputPath": "dist/angular-signals-store-services",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": ["zone.js"],
@@ -77,10 +77,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "test:build:production"
+              "buildTarget": "angular-signals-store-services:build:production"
             },
             "development": {
-              "buildTarget": "test:build:development"
+              "buildTarget": "angular-signals-store-services:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -88,7 +88,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "test:build"
+            "buildTarget": "angular-signals-store-services:build"
           }
         },
         "lint": {
