@@ -1,17 +1,11 @@
 import { Component } from '@angular/core'
-import { RouterOutlet } from '@angular/router'
+import { CounterComponent } from './counter/counter.component'
+import { PostsComponent } from './posts/posts.component'
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
-  template: `
-    <h1>Welcome to {{ title }}!</h1>
-
-    <router-outlet />
-  `,
-  styles: [],
+  imports: [CounterComponent, PostsComponent],
+  templateUrl: './app.component.html',
 })
-export class AppComponent {
-  title = 'test'
-}
+export class AppComponent {}
