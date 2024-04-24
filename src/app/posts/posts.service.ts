@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http'
 import { Injectable, computed, inject, signal } from '@angular/core'
-import { Observable, catchError, tap } from 'rxjs'
+import { Observable, catchError, map, tap } from 'rxjs'
 
 interface State<T> {
   data: T
@@ -18,6 +18,7 @@ type PostsState = State<Post[]>
 @Injectable()
 export class PostsService {
   private readonly http = inject(HttpClient)
+  private readonly baseUrl = 'https://jsonplaceholder.typicode.com/posts'
   private _state = signal<PostsState>({
     data: [],
     loading: false,
@@ -29,82 +30,52 @@ export class PostsService {
   error = computed(() => this._state().error)
 
   getAll(): Observable<Post[]> {
-    this.setLoading(true)
-    return this.http
-      .get<Post[]>('https://jsonplaceholder.typicode.com/posts')
-      .pipe(
-        tap((data) => {
-          this.setData(data)
-        }),
-        catchError((error: HttpErrorResponse) => {
-          this.setError(error)
-          throw error
-        }),
-      )
+    return this.requestWrapper(this.http.get<Post[]>(this.baseUrl))
   }
 
   getPost(id: number): Observable<Post> {
-    this.setLoading(true)
-    return this.http
-      .get<Post>(`https://jsonplaceholder.typicode.com/posts/${id}`)
-      .pipe(
-        tap((data) => {
-          this.setData([data])
-        }),
-        catchError((error: HttpErrorResponse) => {
-          this.setError(error)
-          throw error
-        }),
-      )
+    return this.requestWrapper(this.http.get<Post>(`${this.baseUrl}/${id}`))
   }
 
   createPost(title: string): Observable<Post> {
-    this.setLoading(true)
-    return this.http
-      .post<Post>('https://jsonplaceholder.typicode.com/posts', {
+    return this.requestWrapper(
+      this.http.post<Post>(this.baseUrl, {
         title,
-      })
-      .pipe(
-        tap((data) => {
-          this.setData([data])
-        }),
-        catchError((error: HttpErrorResponse) => {
-          this.setError(error)
-          throw error
-        }),
-      )
+      }),
+    )
   }
 
   updatePost(id: number, title: string): Observable<Post> {
-    this.setLoading(true)
-    return this.http
-      .put<Post>(`https://jsonplaceholder.typicode.com/posts/${id}`, {
+    return this.requestWrapper(
+      this.http.put<Post>(`${this.baseUrl}/${id}`, {
         title,
-      })
-      .pipe(
-        tap((data) => {
-          this.setData([data])
-        }),
-        catchError((error: HttpErrorResponse) => {
-          this.setError(error)
-          throw error
-        }),
-      )
+      }),
+    )
   }
 
-  deletePost(id: number): Observable<unknown> {
-    this.setLoading(true)
-    return this.http
-      .delete(`https://jsonplaceholder.typicode.com/posts/${id}`)
-      .pipe(
-        tap(() => {
-          this.setData([{ id, title: 'Post deleted' }])
-        }),
-        catchError((error: HttpErrorResponse) => {
-          this.setError(error)
-          throw error
-        }),
-      )
+  deletePost(id: number): Observable<Post> {
+    return this.requestWrapper(
+      this.http
+        .delete<Post>(`${this.baseUrl}/${id}`)
+        .pipe(map(() => ({ id, title: 'Post deleted' }))),
+    )
+  }
+
+  private requestWrapper<T>(request: Observable<T>): Observable<T> {
+    this.setLoading()
+    return request.pipe(
+      tap((data) => {
+        if (Array.isArray(data)) {
+          this.setData(data)
+          return
+        }
+        this.setData([data as Post])
+      }),
+      catchError((error: HttpErrorResponse) => {
+        this.setError(error)
+        throw error
+      }),
+    )
   }
 
   private setData(data: Post[]) {
