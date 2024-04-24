@@ -1,8 +1,12 @@
-<h3>Counter: {{ count() }}</h3>
 <button (click)="decrement()">Decrement -1</button>
 <button (click)="increment()">Increment +1</button>
-<input type="number" #input value="0" />
-<button (click)="incrementBy(input.valueAsNumber)">
-  Increment
-  {{ input.valueAsNumber }}
+<input type="number" [(ngModel)]="input" />
+<button (click)="decrementBy()">
+  Decrement by
+  {{ input }}
 </button>
+<button (click)="incrementBy()">
+  Increment by
+  {{ input }}
+</button>
+<blockquote>Counter: {{ count() }}</blockquote>

@@ -1,17 +1,10 @@
 <h3>Posts</h3>
 <button (click)="getAllPosts()" [disabled]="loading()">get all posts</button>
 <button (click)="createPost()" [disabled]="loading()">create new post</button>
-<input type="number" #input value="0" />
-<button (click)="getPost(input.valueAsNumber)" [disabled]="loading()">
-  get post by id
-  {{ input.valueAsNumber }}
-</button>
-<button (click)="updatePost(input.valueAsNumber)" [disabled]="loading()">
-  update post by id
-</button>
-<button (click)="deletePost(input.valueAsNumber)" [disabled]="loading()">
-  delete post by id
-</button>
+<input type="number" [(ngModel)]="input" />
+<button (click)="getPost()" [disabled]="loading()">get post by id</button>
+<button (click)="updatePost()" [disabled]="loading()">update post by id</button>
+<button (click)="deletePost()" [disabled]="loading()">delete post by id</button>
 
 @if (loading()) {
   <blockquote>Loading...</blockquote>

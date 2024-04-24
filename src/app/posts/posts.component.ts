@@ -1,14 +1,18 @@
 import { Component, inject } from '@angular/core'
+import { FormsModule } from '@angular/forms'
 import { PostsService } from './posts.service'
 
 @Component({
   selector: 'app-posts',
   standalone: true,
+  imports: [FormsModule],
   templateUrl: './posts.component.html',
   providers: [PostsService],
 })
 export class PostsComponent {
   private readonly postsService = inject(PostsService)
+
+  input = 0
 
   posts = this.postsService.posts
   loading = this.postsService.loading
@@ -18,19 +22,19 @@ export class PostsComponent {
     this.postsService.getAll().subscribe()
   }
 
-  getPost(id: number) {
-    this.postsService.getPost(id).subscribe()
+  getPost() {
+    this.postsService.getPost(this.input).subscribe()
   }
 
   createPost() {
     this.postsService.createPost('New post').subscribe()
   }
 
-  updatePost(id: number) {
-    this.postsService.updatePost(id, 'Updated post').subscribe()
+  updatePost() {
+    this.postsService.updatePost(this.input, 'Updated post').subscribe()
   }
 
-  deletePost(id: number) {
-    this.postsService.deletePost(id).subscribe()
+  deletePost() {
+    this.postsService.deletePost(this.input).subscribe()
   }
 }
