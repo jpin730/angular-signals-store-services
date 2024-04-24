@@ -52,7 +52,7 @@ export class PostsService {
     }))
   }
 
-  private setLoading(loading: boolean) {
+  private setLoading(loading = true) {
     this._state.update((state) => ({
       ...state,
       loading,
@@ -62,6 +62,7 @@ export class PostsService {
   private setError(error: HttpErrorResponse) {
     this._state.update((state) => ({
       ...state,
+      data: [],
       loading: false,
       error: error.message,
     }))

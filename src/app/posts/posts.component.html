@@ -1,15 +1,16 @@
 <h3>Posts</h3>
-<button (click)="getAllPosts()">fetch posts</button>
-@if (!error()) {
+<button (click)="getAllPosts()" [disabled]="loading()">fetch posts</button>
+
+@if (loading()) {
+  <blockquote>Loading...</blockquote>
+} @else if (error()) {
+  <blockquote><strong>Error:</strong> {{ error() }}</blockquote>
+} @else {
   <div style="max-height: 200px; overflow-y: auto">
     @for (post of posts(); track post.id) {
-      <article>
-        <h4>{{ post.title }}</h4>
-      </article>
+      <blockquote>{{ post.title }}</blockquote>
     } @empty {
       <blockquote>No posts found!</blockquote>
     }
   </div>
-} @else {
-  <blockquote><strong>Error:</strong> {{ error() }}</blockquote>
 }
