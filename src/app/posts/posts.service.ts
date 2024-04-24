@@ -75,6 +75,23 @@ export class PostsService {
       )
   }
 
+  updatePost(id: number, title: string): Observable<Post> {
+    this.setLoading(true)
+    return this.http
+      .put<Post>(`https://jsonplaceholder.typicode.com/posts/${id}`, {
+        title,
+      })
+      .pipe(
+        tap((data) => {
+          this.setData([data])
+        }),
+        catchError((error: HttpErrorResponse) => {
+          this.setError(error)
+          throw error
+        }),
+      )
+  }
+
   private setData(data: Post[]) {
     this._state.update((state) => ({
       ...state,

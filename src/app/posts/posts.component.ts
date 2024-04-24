@@ -25,4 +25,8 @@ export class PostsComponent {
   createPost() {
     this.postsService.createPost('New post').subscribe()
   }
+
+  updatePost(id: number) {
+    this.postsService.updatePost(id, 'Updated post').subscribe()
+  }
 }
