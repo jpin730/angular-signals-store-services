@@ -29,5 +29,3 @@ npm run build
 ```
 
 The output will be available in the `docs` folder for deployment in GitHub Pages.
-
-<https://jpin730.github.io/angular-signals-store-services>
